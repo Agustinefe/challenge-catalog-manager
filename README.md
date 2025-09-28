@@ -11,11 +11,6 @@
 - Auth
   - Sign in
   - Sign out
-- Notification
-  - Get all the user notifications
-  - Create new Notification
-  - Update Notification
-  - Delete Notification
 
 ## Badges
 
@@ -27,7 +22,7 @@
 
 - Docker installed without SUDO Permission
 - Docker compose installed without SUDO
-- Ports free: 3000 and 5432
+- Ports free: 3000 and 3306
 
 ## How to run the APP
 
@@ -60,24 +55,14 @@ npm run seed
 ## Techs
 
 - Nest: 11
-- Node: Node20.18.2
-- TypeORM
-- Postgres
+- Node: 20.18.2
+- MySQL: 8.0 (with mysql2)
 
 ## Decisions made
 
 - Clean Architecture: To be able to handle further changes in the future in a proper way.
-- TypeORM: Because it is the already integrated ORM in the Nest Framework and it is the most popular ORM so it is easy to find fixes and people that know how to use it
 - Docker: To make the project portable
 - Jest/Testing/E2E: Jest is the most used testing framework of JS. Same argument as above. E2E testing was done because it is useless to always test every single part. That's why if the controller provide the proper answer the test has passed.
-
-- The notification channels were implemeted using an Strategy pattern, to avoid changing the existing code when adding a new channel. A channel implements four methods:
-  - getName: returns the channels identifier.
-  - validate: to validate the notification data before sending it.
-  - send: formats and send the notification through the appropiated external service, and returns the operation result.
-  - register: register the operation result in the DB.
-- Every channel is an injectable, meaning that they can inject external dependencies as it needs, like external services for email, sms, push notification, etc.
-- Every channel is injected in the mapper, which determines which service should be called for every NotificationChannel.
 
 ## Route
 
