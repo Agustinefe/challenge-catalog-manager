@@ -21,6 +21,8 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/DZyNAYPAhzZPw9XNQdFp44/3hxMiJybFGndEJMA2bt8Lh/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/DZyNAYPAhzZPw9XNQdFp44/3hxMiJybFGndEJMA2bt8Lh/tree/main)
 
+[![codecov](https://codecov.io/gh/Agustinefe/challenge-catalog-manager/graph/badge.svg?token=RvPB8sIcZA)](https://codecov.io/gh/Agustinefe/challenge-catalog-manager)
+
 ## Pre-Requisites
 
 - Docker installed without SUDO Permission
