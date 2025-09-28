@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "sku": "DLN01",
+    "descripcion_corta": "LA NACION LUNES",
+    "descripcion_larga": "Diario La Nación Lunes",
+    "qty": null,
+    "ubicacion_imagen": null,
+    "producto_tipo_id": 1,
+    "producto_categoria_id": 1,
+    "producto_estado_id": 1
+  },
+  {
+    "id": 2,
+    "sku": "HOL11020300373",
+    "descripcion_corta": "HOLA",
+    "descripcion_larga": "¡HOLA! Argentina Ed.373",
+    "qty": 6,
+    "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/HOL11020300373.jpg",
+    "producto_tipo_id": 2,
+    "producto_categoria_id": 3,
+    "producto_estado_id": 3
+  },
+  {
+    "id": 3,
+    "sku": "JAR11021400001",
+    "descripcion_corta": "AGENDA JARDIN",
+    "descripcion_larga": "AGENDA JARDIN ED.1",
+    "qty": 9,
+    "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/JAR11021400001.jpg",
+    "producto_tipo_id": 2,
+    "producto_categoria_id": 4,
+    "producto_estado_id": 3
+  },
+  {
+    "id": 4,
+    "sku": "HOL11020300398",
+    "descripcion_corta": "HOLA",
+    "descripcion_larga": "¡HOLA! Argentina Ed.398",
+    "qty": 10,
+    "ubicacion_imagen": null,
+    "producto_tipo_id": 1,
+    "producto_categoria_id": 3,
+    "producto_estado_id": 3
+  },
+  {
+    "id": 5,
+    "sku": "OPC13066300001",
+    "descripcion_corta": "LIBROS PLANETA",
+    "descripcion_larga": "EL CLUB DEL CRIMEN DE LOS JUEVES",
+    "qty": 12,
+    "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/OPC13066300001.jpg",
+    "producto_tipo_id": 3,
+    "producto_categoria_id": 12,
+    "producto_estado_id": 3
+  },
+  {
+    "id": 6,
+    "sku": "OPC11092810014",
+    "descripcion_corta": "JARD EN CASA - RE",
+    "descripcion_larga": "JARD EN CASA - RZ - ED. 10014",
+    "qty": 5,
+    "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/OPC11092810014.jpg",
+    "producto_tipo_id": 3,
+    "producto_categoria_id": 14,
+    "producto_estado_id": 3
+  },
+  {
+    "id": 7,
+    "sku": "HOL11020300406",
+    "descripcion_corta": "HOLA",
+    "descripcion_larga": "¡HOLA! Argentina Ed.406",
+    "qty": 9,
+    "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/HOL11020300406.jpg",
+    "producto_tipo_id": 2,
+    "producto_categoria_id": 3,
+    "producto_estado_id": 1
+  },
+  {
+    "id": 8,
+    "sku": "POP01",
+    "descripcion_corta": "POPULAR LUN",
+    "descripcion_larga": "Diario El Popular Lunes",
+    "qty": null,
+    "ubicacion_imagen": null,
+    "producto_tipo_id": 1,
+    "producto_categoria_id": 2,
+    "producto_estado_id": 1
+  },
+  {
+    "id": 9,
+    "sku": "POP02",
+    "descripcion_corta": "POPULAR MAR",
+    "descripcion_larga": "Diario El Popular Martes",
+    "qty": null,
+    "ubicacion_imagen": null,
+    "producto_tipo_id": 1,
+    "producto_categoria_id": 2,
+    "producto_estado_id": 1
+  },
+  {
+    "id": 10,
+    "sku": "LUG00006500259",
+    "descripcion_corta": "LUGARES",
+    "descripcion_larga": "LUGARES",
+    "qty": null,
+    "ubicacion_imagen": null,
+    "producto_tipo_id": 3,
+    "producto_categoria_id": 6,
+    "producto_estado_id": 3
+  },
+  {
+    "id": 11,
+    "sku": "HOL11020300401",
+    "descripcion_corta": "HOLA",
+    "descripcion_larga": "¡HOLA! Argentina Ed.401",
+    "qty": null,
+    "ubicacion_imagen": null,
+    "producto_tipo_id": 3,
+    "producto_categoria_id": 3,
+    "producto_estado_id": 3
+  }
+]

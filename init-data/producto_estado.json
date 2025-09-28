@@ -1,0 +1,14 @@
+[
+	{
+		"id": 1,
+		"descripcion" : "Deshabilitado"
+	},
+	{
+		"id": 2,
+		"descripcion" : "Habilitado"
+	},
+	{
+		"id": 3,
+		"descripcion" : "Mostrar"
+	}
+]

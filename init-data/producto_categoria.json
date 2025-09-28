@@ -1,0 +1,86 @@
+[
+	{
+		"id": 1,
+		"codigo" : "LNA",
+		"descripcion" : "Familia La Nación"
+		
+	},
+	{
+		"id": 2,
+		"codigo" : "POP",
+		"descripcion" : "Familia Popular"
+		
+	},
+	{
+		"id": 3,
+		"codigo" : "HOL",
+		"descripcion" : "Familia Hola"
+		
+	},
+	{
+	    "id": 4,
+		"codigo" : "JAR",
+		"descripcion" : "Familia Jardín"
+		
+	},
+	{
+		"id": 5,
+		"codigo" : "LIV",
+		"descripcion" : "Familia Living"
+	
+	},
+	{
+		"id": 6,
+		"codigo" : "LUG",
+		"descripcion" : "Familia Lugares"
+	
+	},
+	{
+		"id": 7,
+		"codigo" : "OHL",
+		"descripcion" : "Familia Ohlalá"
+	
+	},
+	{
+		"id": 8,
+		"codigo" : "RST",
+		"descripcion" : "Familia Rolling Stone"
+	
+	},
+	{
+		"id": 9,
+		"codigo" : "VER",
+		"descripcion" : "Familia Vertice"
+	
+	},
+	{
+		"id": 10,
+		"codigo" : "TAP",
+		"descripcion" : "Familia Tapas"
+		
+	},
+	{
+		"id": 11,
+		"codigo" : "SHT",
+		"descripcion" : "One Shot"
+	
+	},
+	{
+		"id": 12,
+		"codigo" : "PLA",
+		"descripcion" : "Opcionales Ed. Planeta"
+		
+	},
+	{
+		"id": 13,
+		"codigo" : "PRH",
+		"descripcion" : "Pengüin Random House"
+		
+	},
+	{
+		"id": 14,
+		"codigo" : "GEN",
+		"descripcion" : "Generico"
+	
+	}
+]

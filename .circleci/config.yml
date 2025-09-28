@@ -1,0 +1,53 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/reference/configuration-reference
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.2
+  codecov: codecov/codecov@5
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
+jobs:
+  build-and-test: # this can be any name you choose
+    docker:
+      # Api container image
+      - image: cimg/node:20.18.2
+        environment:
+          DATABASE_HOST: 0.0.0.0
+          DATABASE_PORT: 3306
+          DATABASE_USER: mysql
+          DATABASE_PASSWORD: password
+          DATABASE_NAME: test-db
+          PORT: 3000
+
+      # Mysql container image
+      - image: cimg/mysql:8.0
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test-db
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: password
+    executor: node/default # use the default executor defined within the node orb
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm run test:e2e
+          name: Run E2E tests
+      - codecov/upload
+      - run:
+          command: npm run build
+          name: Build app
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+# Orchestrate jobs using workflows
+# See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test

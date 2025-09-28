@@ -1,0 +1,46 @@
+[
+	{
+		"id" : 1,
+		"nombre": "Roberto",
+		"apeliido": "Sanchez",
+		"domicilio" : "MANDISOVI 2989",
+		"cuit" : "30619823873"
+	},
+	{
+		"id" : 2,
+		"nombre": "Florencia",
+		"apeliido": "Gomez",
+		"domicilio" : "DOBLAS 1769/71",
+		"cuit" : "27221512117"
+	},
+	{
+		"id": 3,
+		"nombre": "Adriana",
+		"apeliido": "MERONI",
+		"domicilio" : "SARMIENTO 547",
+		"cuit" : "20205558692"
+	},
+	{
+		"id": 4,
+		"nombre": "Mario",
+		"apeliido": "Aguirre",
+		"domicilio" : "PARANA 26",
+		"cuit" : "30205558692"
+	},
+	{
+		"id": 5,
+		"nombre": "Otero",
+		"apeliido": "Maria",
+		"domicilio" : "SANTA FE 16",
+		"cuit" : "20201558691"
+	},
+	{
+		"id": 6,
+		"nombre": "Juan",
+		"apeliido": "Lopez",
+		"domicilio" : "SANTA FE 16",
+		"cuit" : "30680478070"
+	}
+]	
+	
+	

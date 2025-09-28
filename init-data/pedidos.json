@@ -1,0 +1,71 @@
+[
+	{
+		"id":1,
+		"fecha_circulacion" : "2025-01-03 00:00:00.000000",
+		"precio" : 888.00,
+		"clase_entrega" : "ASG",
+		"id_cliente" : "106",
+		"condicion_pago_aplicada" : "FAC",
+		"producto_id": 2,
+		"cliente_id": 1,
+		"cantidad_solicitada" : 5
+		
+	},
+	{
+		"id":2,
+		"fecha_circulacion" : "2025-11-03 00:00:00.000000",
+		"precio" : 78.00,
+		"clase_entrega" : "ASG",
+		"id_cliente" : "106",
+		"condicion_pago_aplicada" : "FAC",
+		"producto_id": 3,
+		"cliente_id": 1,
+		"cantidad_solicitada" : 15
+	},
+	{
+		"id":3,
+		"fecha_circulacion" : "2025-11-13 00:00:00.000000",
+		"precio" : 17.00,
+		"clase_entrega" : "REP",
+		"id_cliente" : "106",
+		"condicion_pago_aplicada" : "FAC",
+		"producto_id":4,
+		"cliente_id": 2,
+		"cantidad_solicitada" : 74
+	},
+	{
+		"id":4,
+		"fecha_circulacion" : "2025-12-01 00:00:00.000000",
+		"precio" : 45.00,
+		"clase_entrega" : "REP",
+		"id_cliente" : "106",
+		"condicion_pago_aplicada" : "FAC",
+		"producto_id": 5,
+		"cliente_id": 2,
+		"cantidad_solicitada" : 45
+	},
+	
+	{
+		"id":5,
+		"fecha_circulacion" : "2025-10-01 00:00:00.000000",
+		"precio" : 5.00,
+		"clase_entrega" : "ASIG",
+		"id_cliente" : "106",
+		"condicion_pago_aplicada" : "FAC",
+		"producto_id": 5,
+		"cliente_id": 3,
+		"cantidad_solicitada" : 45
+	},
+	
+	{
+		"id":6,
+		"fecha_circulacion" : "2025-10-11 00:00:00.000000",
+		"precio" : 35.00,
+		"clase_entrega" : "ASIG",
+		"id_cliente" : "106",
+		"condicion_pago_aplicada" : "FAC",
+		"producto_id": 10,
+		"cliente_id": 4,
+		"cantidad_solicitada" : 8
+	}
+]	

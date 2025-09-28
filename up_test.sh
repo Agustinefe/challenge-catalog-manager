@@ -1,0 +1,1 @@
+docker compose -f docker-compose.test.yaml --env-file .env.test up -d --build

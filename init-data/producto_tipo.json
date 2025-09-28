@@ -1,0 +1,14 @@
+[
+	{
+		"codigo" : "DIA",
+		"descripcion" : "Diarios"
+	},
+	{
+		"codigo" : "RVT",
+		"descripcion" : "Revistas"
+	},
+	{
+		"codigo" : "OPC",
+		"descripcion" : "Opcionales"
+	}
+]
