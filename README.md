@@ -14,7 +14,7 @@
 
 ## Badges
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/DZyNAYPAhzZPw9XNQdFp44/3hxMiJybFGndEJMA2bt8Lh/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/DZyNAYPAhzZPw9XNQdFp44/3hxMiJybFGndEJMA2bt8Lh/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/DZyNAYPAhzZPw9XNQdFp44/3hxMiJybFGndEJMA2bt8Lh/tree/main.svg?style=svg&circle-token=CCIPRJ_QhF361qCjAa2zHbdTrwcXi_85762fea7027d97602b43d37fb8e1bd7d4d0f2f8)](https://dl.circleci.com/status-badge/redirect/circleci/DZyNAYPAhzZPw9XNQdFp44/3hxMiJybFGndEJMA2bt8Lh/tree/main)
 
 [![codecov](https://codecov.io/gh/Agustinefe/challenge-catalog-manager/graph/badge.svg?token=RvPB8sIcZA)](https://codecov.io/gh/Agustinefe/challenge-catalog-manager)
 
