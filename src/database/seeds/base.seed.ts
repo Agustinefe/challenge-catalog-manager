@@ -1,7 +1,6 @@
 import * as mysql from 'mysql2/promise';
-import { RowDataPacket } from 'mysql2/promise';
 
-export default abstract class BaseSeeder<T extends RowDataPacket> {
+export default abstract class BaseSeeder<T> {
   protected conn: mysql.Connection;
 
   constructor(conn: mysql.Connection) {

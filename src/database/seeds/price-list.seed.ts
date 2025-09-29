@@ -1,16 +1,16 @@
 import * as mysql from 'mysql2/promise';
 import data from '../../../init-data/lista_precio.json';
 import BaseSeeder from './base.seed';
-import { PriceModel } from 'src/product/models/price.model';
+import { ProductPrice } from 'src/product/entities/price.entity';
 
-export default class PriceListSeeder extends BaseSeeder<PriceModel> {
+export default class PriceListSeeder extends BaseSeeder<ProductPrice> {
   constructor(conn: mysql.Connection) {
     super(conn);
   }
 
   public async createTable(): Promise<void> {
     const createTableQuery = `
-      CREATE TABLE price_list (
+      CREATE TABLE IF NOT EXISTS price_list (
         id integer PRIMARY KEY,
         price decimal,
         fromDate timestamp,
@@ -32,7 +32,7 @@ export default class PriceListSeeder extends BaseSeeder<PriceModel> {
     await this.conn.execute(dropTableQuery);
   }
 
-  public async populate(): Promise<PriceModel[]> {
+  public async populate(): Promise<ProductPrice[]> {
     const priceList = data.map((u) => [
       u.id,
       u.precio,
@@ -46,9 +46,9 @@ export default class PriceListSeeder extends BaseSeeder<PriceModel> {
       [priceList],
     );
 
-    const [rows] = await this.conn.execute<PriceModel[]>(
-      'SELECT * FROM price_list',
-    );
+    const [rows] = await this.conn.execute<
+      (ProductPrice & mysql.RowDataPacket)[]
+    >('SELECT * FROM price_list');
     return rows;
   }
 }

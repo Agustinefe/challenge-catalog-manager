@@ -1,16 +1,16 @@
 import * as mysql from 'mysql2/promise';
 import data from '../../../init-data/producto_estado.json';
 import BaseSeeder from './base.seed';
-import { ProductStatusModel } from 'src/product/models/product-status.model';
+import { ProductStatus } from 'src/product/entities/product-status.entity';
 
-export default class ProductStatusSeeder extends BaseSeeder<ProductStatusModel> {
+export default class ProductStatusSeeder extends BaseSeeder<ProductStatus> {
   constructor(conn: mysql.Connection) {
     super(conn);
   }
 
   public async createTable(): Promise<void> {
     const createTableQuery = `
-      CREATE TABLE product_status (
+      CREATE TABLE IF NOT EXISTS product_status (
         id integer AUTO_INCREMENT PRIMARY KEY,
         description varchar(255)
       );
@@ -25,7 +25,7 @@ export default class ProductStatusSeeder extends BaseSeeder<ProductStatusModel> 
     await this.conn.execute(dropTableQuery);
   }
 
-  public async populate(): Promise<ProductStatusModel[]> {
+  public async populate(): Promise<ProductStatus[]> {
     const productStatus = data.map((u) => [u.id, u.descripcion]);
 
     await this.conn.query(
@@ -33,9 +33,9 @@ export default class ProductStatusSeeder extends BaseSeeder<ProductStatusModel> 
       [productStatus],
     );
 
-    const [rows] = await this.conn.execute<ProductStatusModel[]>(
-      'SELECT * FROM product_status',
-    );
+    const [rows] = await this.conn.execute<
+      (ProductStatus & mysql.RowDataPacket)[]
+    >('SELECT * FROM product_status');
     return rows;
   }
 }

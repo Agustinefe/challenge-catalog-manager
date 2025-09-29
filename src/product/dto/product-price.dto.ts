@@ -1,6 +1,4 @@
-import { RowDataPacket } from 'mysql2';
-
-export interface PriceModel extends RowDataPacket {
+export class ProductPriceDto {
   id: number;
   price: number;
   fromDate: Date;

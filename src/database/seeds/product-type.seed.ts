@@ -1,16 +1,16 @@
 import * as mysql from 'mysql2/promise';
 import data from '../../../init-data/producto_tipo.json';
 import BaseSeeder from './base.seed';
-import { ProductTypeModel } from 'src/product/models/product-type.model';
+import { ProductType } from 'src/product/entities/product-type.entity';
 
-export default class ProductTypeSeeder extends BaseSeeder<ProductTypeModel> {
+export default class ProductTypeSeeder extends BaseSeeder<ProductType> {
   constructor(conn: mysql.Connection) {
     super(conn);
   }
 
   public async createTable(): Promise<void> {
     const createTableQuery = `
-      CREATE TABLE product_type (
+      CREATE TABLE IF NOT EXISTS product_type (
         id integer AUTO_INCREMENT PRIMARY KEY,
         code varchar(255),
         description varchar(255)
@@ -26,7 +26,7 @@ export default class ProductTypeSeeder extends BaseSeeder<ProductTypeModel> {
     await this.conn.execute(dropTableQuery);
   }
 
-  public async populate(): Promise<ProductTypeModel[]> {
+  public async populate(): Promise<ProductType[]> {
     const productCategories = data.map((u) => [u.codigo, u.descripcion]);
 
     await this.conn.query(
@@ -34,9 +34,9 @@ export default class ProductTypeSeeder extends BaseSeeder<ProductTypeModel> {
       [productCategories],
     );
 
-    const [rows] = await this.conn.execute<ProductTypeModel[]>(
-      'SELECT * FROM product_type',
-    );
+    const [rows] = await this.conn.execute<
+      (ProductType & mysql.RowDataPacket)[]
+    >('SELECT * FROM product_type');
     return rows;
   }
 }

@@ -1,26 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { PaginationDto } from './dto/pagination.dto';
+import { Product } from './entities/product.entity';
+import { ProductRepository } from './product.repository';
+import { RowDataPacket } from 'mysql2';
+import { ListProductsDto } from './dto/list-products.dto';
 
 @Injectable()
 export class ProductService {
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
-  }
+  constructor(private productRepository: ProductRepository) { }
 
-  findAll() {
-    return `This action returns all product`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
-  }
-
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async listProducts(paginationDto: PaginationDto): Promise<ListProductsDto[]> {
+    console.log(paginationDto);
+    return await this.productRepository.findManyPaginated();
   }
 }
