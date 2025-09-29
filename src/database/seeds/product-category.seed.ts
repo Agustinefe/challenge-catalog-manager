@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2/promise';
 import data from '../../../init-data/producto_categoria.json';
 import BaseSeeder from './base.seed';
-import { ProductCategory } from 'src/product/entities/product-category.entity';
+import { ProductCategory } from '../../../src/product/entities/product-category.entity';
 
 export default class ProductCategorySeeder extends BaseSeeder<ProductCategory> {
   constructor(conn: mysql.Connection) {
