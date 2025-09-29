@@ -5,7 +5,7 @@ import {
   IsNotEmpty,
   IsEmail,
   MinLength,
-  IsUUID,
+  IsNumber,
 } from 'class-validator';
 
 export class UserBaseDto {
@@ -13,8 +13,7 @@ export class UserBaseDto {
     description: 'The unique identifier of the user',
     example: 1,
   })
-  @IsString()
-  @IsUUID()
+  @IsNumber()
   id: number;
 
   @ApiProperty({
