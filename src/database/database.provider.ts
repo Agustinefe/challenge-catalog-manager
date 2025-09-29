@@ -22,7 +22,7 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     await this.connect();
-    await this.synchronize();
+    if (dataSourceConfig.shouldSynchronize) await this.synchronize();
   }
 
   async connect() {
@@ -37,6 +37,7 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
   get connection(): mysql.Connection {
     this.assertConnection();
+
     return this._connection;
   }
 
