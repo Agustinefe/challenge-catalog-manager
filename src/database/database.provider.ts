@@ -7,6 +7,7 @@ import ProductTypeSeeder from './seeds/product-type.seed';
 import ProductCategorySeeder from './seeds/product-category.seed';
 import ProductStatusSeeder from './seeds/product-status.seed';
 import ProductSeeder from './seeds/product.seed';
+import PriceListSeeder from './seeds/price-list.seed';
 
 @Injectable()
 export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
@@ -27,9 +28,7 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
   async connect() {
     if (!this._connection) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { shouldSynchronize, ...configuration } = dataSourceConfig;
-      this._connection = await mysql.createConnection(configuration);
+      this._connection = await mysql.createConnection(dataSourceConfig);
     }
   }
 
@@ -52,9 +51,12 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     const productCategorySeeder = new ProductCategorySeeder(this._connection);
     const productStatusSeeder = new ProductStatusSeeder(this._connection);
     const productSeeder = new ProductSeeder(this._connection);
+    const priceListSeeder = new PriceListSeeder(this._connection);
 
     await userSessionSeeder.dropTable();
     await userSeeder.dropTable();
+
+    await priceListSeeder.dropTable();
 
     await productSeeder.dropTable();
 
@@ -72,6 +74,7 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     const productCategorySeeder = new ProductCategorySeeder(this._connection);
     const productStatusSeeder = new ProductStatusSeeder(this._connection);
     const productSeeder = new ProductSeeder(this._connection);
+    const priceListSeeder = new PriceListSeeder(this._connection);
 
     await userSeeder.createTable();
     await userSessionSeeder.createTable();
@@ -81,5 +84,7 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     await productStatusSeeder.createTable();
 
     await productSeeder.createTable();
+
+    await priceListSeeder.createTable();
   }
 }

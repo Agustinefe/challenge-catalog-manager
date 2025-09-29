@@ -6,6 +6,7 @@ import ProductTypeSeeder from './seeds/product-type.seed';
 import ProductCategorySeeder from './seeds/product-category.seed';
 import ProductStatusSeeder from './seeds/product-status.seed';
 import ProductSeeder from './seeds/product.seed';
+import PriceListSeeder from './seeds/price-list.seed';
 
 async function run() {
   const connection = await mysql.createConnection(dataSourceConfig);
@@ -16,9 +17,12 @@ async function run() {
   const productCategorySeeder = new ProductCategorySeeder(connection);
   const productStatusSeeder = new ProductStatusSeeder(connection);
   const productSeeder = new ProductSeeder(connection);
+  const priceListSeeder = new PriceListSeeder(connection);
 
   await userSessionSeeder.dropTable();
   await userSeeder.dropTable();
+
+  await priceListSeeder.dropTable();
 
   await productSeeder.dropTable();
 
@@ -32,12 +36,14 @@ async function run() {
   await productCategorySeeder.createTable();
   await productStatusSeeder.createTable();
   await productSeeder.createTable();
+  await priceListSeeder.createTable();
 
   await userSeeder.populate();
   await productTypeSeeder.populate();
   await productCategorySeeder.populate();
   await productStatusSeeder.populate();
   await productSeeder.populate();
+  await priceListSeeder.populate();
 
   await connection.end();
 }
