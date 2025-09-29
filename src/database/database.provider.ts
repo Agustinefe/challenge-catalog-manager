@@ -5,6 +5,7 @@ import UserSeeder from './seeds/user.seed';
 import UserSessionSeeder from './seeds/user-session.seed';
 import ProductTypeSeeder from './seeds/product-type.seed';
 import ProductCategorySeeder from './seeds/product-category.seed';
+import ProductStatusSeeder from './seeds/product-status.seed';
 
 @Injectable()
 export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
@@ -45,12 +46,14 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     const userSessionSeeder = new UserSessionSeeder(this._connection);
     const productTypeSeeder = new ProductTypeSeeder(this._connection);
     const productCategorySeeder = new ProductCategorySeeder(this._connection);
+    const productStatusSeeder = new ProductStatusSeeder(this._connection);
 
     await userSessionSeeder.dropTable();
     await userSeeder.dropTable();
 
     await productTypeSeeder.dropTable();
     await productCategorySeeder.dropTable();
+    await productStatusSeeder.dropTable();
   }
 
   async synchronize(): Promise<void> {
@@ -60,11 +63,13 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     const userSessionSeeder = new UserSessionSeeder(this._connection);
     const productTypeSeeder = new ProductTypeSeeder(this._connection);
     const productCategorySeeder = new ProductCategorySeeder(this._connection);
+    const productStatusSeeder = new ProductStatusSeeder(this._connection);
 
     await userSeeder.createTable();
     await userSessionSeeder.createTable();
 
     await productTypeSeeder.createTable();
     await productCategorySeeder.createTable();
+    await productStatusSeeder.createTable();
   }
 }
