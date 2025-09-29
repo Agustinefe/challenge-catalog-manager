@@ -28,7 +28,9 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
   async connect() {
     if (!this._connection) {
-      this._connection = await mysql.createConnection(dataSourceConfig);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { shouldSynchronize, ...rest } = dataSourceConfig;
+      this._connection = await mysql.createConnection(rest);
     }
   }
 

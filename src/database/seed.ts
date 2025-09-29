@@ -9,7 +9,9 @@ import ProductSeeder from './seeds/product.seed';
 import PriceListSeeder from './seeds/price-list.seed';
 
 async function run() {
-  const connection = await mysql.createConnection(dataSourceConfig);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { shouldSynchronize, ...rest } = dataSourceConfig;
+  const connection = await mysql.createConnection(rest);
 
   const userSeeder = new UserSeeder(connection);
   const userSessionSeeder = new UserSessionSeeder(connection);
