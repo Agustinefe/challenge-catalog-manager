@@ -3,6 +3,7 @@ import * as mysql from 'mysql2/promise';
 import { dataSourceConfig } from '../../src/data-source';
 import UserSeeder from './seeds/user.seed';
 import UserSessionSeeder from './seeds/user-session.seed';
+import ProductTypeSeeder from './seeds/product-type.seed';
 
 @Injectable()
 export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
@@ -18,6 +19,7 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     await this.connect();
+    await this.synchronize();
   }
 
   async connect() {
@@ -40,9 +42,12 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
     const userSeeder = new UserSeeder(this._connection);
     const userSessionSeeder = new UserSessionSeeder(this._connection);
+    const productTypeSeeder = new ProductTypeSeeder(this._connection);
 
     await userSessionSeeder.dropTable();
     await userSeeder.dropTable();
+
+    await productTypeSeeder.dropTable();
   }
 
   async synchronize(): Promise<void> {
@@ -50,8 +55,11 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
 
     const userSeeder = new UserSeeder(this._connection);
     const userSessionSeeder = new UserSessionSeeder(this._connection);
+    const productTypeSeeder = new ProductTypeSeeder(this._connection);
 
     await userSeeder.createTable();
     await userSessionSeeder.createTable();
+
+    await productTypeSeeder.createTable();
   }
 }

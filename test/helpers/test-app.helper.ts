@@ -20,13 +20,9 @@ export class TestHelper {
 
     const app = moduleFixture.createNestApplication();
 
-    // First, get the DataSource and initialize it before using it
     const dataSource = moduleFixture.get<DatabaseProvider>(DatabaseProvider);
 
-    // Manually initialize the database connection
     await dataSource.connect();
-
-    // Now we can safely use dropDatabase and synchronize
     await dataSource.dropDatabase();
     await dataSource.synchronize();
 
