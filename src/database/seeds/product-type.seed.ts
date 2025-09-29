@@ -1,17 +1,16 @@
-import { EncryptService } from '../../common/encrypt.service';
 import * as mysql from 'mysql2/promise';
-import data from '../../../init-data/producto_tipo.json';
+import data from '../../../init-data/producto_categoria.json';
 import BaseSeeder from './base.seed';
-import { UserModel } from '../../../src/users/models';
+import { ProductTypeModel } from 'src/product/models/product-type.model';
 
-export default class ProductTypeSeeder extends BaseSeeder<UserModel> {
+export default class ProductTypeSeeder extends BaseSeeder<ProductTypeModel> {
   constructor(conn: mysql.Connection) {
     super(conn);
   }
 
   public async createTable(): Promise<void> {
     const createTableQuery = `
-      CREATE TABLE product_type (
+      CREATE TABLE product_category (
         id integer AUTO_INCREMENT PRIMARY KEY,
         code varchar(255),
         description varchar(255)
@@ -22,20 +21,22 @@ export default class ProductTypeSeeder extends BaseSeeder<UserModel> {
 
   public async dropTable(): Promise<void> {
     const dropTableQuery = `
-      DROP TABLE IF EXISTS product_type;
+      DROP TABLE IF EXISTS product_category;
     `;
     await this.conn.execute(dropTableQuery);
   }
 
-  public async populate(): Promise<UserModel[]> {
-    const productTypes = data.map((u) => [u.codigo, u.descripcion]);
+  public async populate(): Promise<ProductTypeModel[]> {
+    const productCategories = data.map((u) => [u.codigo, u.descripcion]);
 
     await this.conn.query(
-      'INSERT INTO product_type (code, description) VALUES ?',
-      [productTypes],
+      'INSERT INTO product_category (code, description) VALUES ?',
+      [productCategories],
     );
 
-    const [rows] = await this.conn.execute<UserModel[]>('SELECT * FROM users');
+    const [rows] = await this.conn.execute<ProductTypeModel[]>(
+      'SELECT * FROM product_category',
+    );
     return rows;
   }
 }
