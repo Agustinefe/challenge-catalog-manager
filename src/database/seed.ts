@@ -1,51 +1,16 @@
 import * as mysql from 'mysql2/promise';
 import { dataSourceConfig } from '../../src/data-source';
-import UserSeeder from './seeds/user.seed';
-import UserSessionSeeder from './seeds/user-session.seed';
-import ProductTypeSeeder from './seeds/product-type.seed';
-import ProductCategorySeeder from './seeds/product-category.seed';
-import ProductStatusSeeder from './seeds/product-status.seed';
-import ProductSeeder from './seeds/product.seed';
-import PriceListSeeder from './seeds/price-list.seed';
+import { DatabaseSetup } from './seeds/database-setup';
 
 async function run() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { shouldSynchronize, ...rest } = dataSourceConfig;
   const connection = await mysql.createConnection(rest);
+  const seeder = new DatabaseSetup(connection);
 
-  const userSeeder = new UserSeeder(connection);
-  const userSessionSeeder = new UserSessionSeeder(connection);
-  const productTypeSeeder = new ProductTypeSeeder(connection);
-  const productCategorySeeder = new ProductCategorySeeder(connection);
-  const productStatusSeeder = new ProductStatusSeeder(connection);
-  const productSeeder = new ProductSeeder(connection);
-  const priceListSeeder = new PriceListSeeder(connection);
-
-  await userSessionSeeder.dropTable();
-  await userSeeder.dropTable();
-
-  await priceListSeeder.dropTable();
-
-  await productSeeder.dropTable();
-
-  await productTypeSeeder.dropTable();
-  await productCategorySeeder.dropTable();
-  await productStatusSeeder.dropTable();
-
-  await userSeeder.createTable();
-  await userSessionSeeder.createTable();
-  await productTypeSeeder.createTable();
-  await productCategorySeeder.createTable();
-  await productStatusSeeder.createTable();
-  await productSeeder.createTable();
-  await priceListSeeder.createTable();
-
-  await userSeeder.populate();
-  await productTypeSeeder.populate();
-  await productCategorySeeder.populate();
-  await productStatusSeeder.populate();
-  await productSeeder.populate();
-  await priceListSeeder.populate();
+  await seeder.dropTables();
+  await seeder.createTables();
+  await seeder.seedTables();
 
   await connection.end();
 }
