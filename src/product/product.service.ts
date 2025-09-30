@@ -1,13 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { PaginationDto } from './dto/pagination.dto';
 import { ProductRepository } from './product.repository';
-import { ListProductsDto } from './dto/list-products.dto';
+import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
+import { ListProductsResponseDto } from './dto/list-products.response.dto';
 
 @Injectable()
 export class ProductService {
   constructor(private productRepository: ProductRepository) { }
 
-  async listProducts(paginationDto: PaginationDto): Promise<ListProductsDto[]> {
-    return await this.productRepository.findManyPaginated(paginationDto);
+  async listProducts(
+    paginationDto: ListProductPaginationDto,
+  ): Promise<ListProductsResponseDto> {
+    const { total, rows } =
+      await this.productRepository.listProductsPaginated(paginationDto);
+    return {
+      data: rows,
+      meta: {
+        totalItems: total,
+        count: rows.length,
+        pageSize: paginationDto.pageSize,
+        page: paginationDto.page,
+      },
+    };
   }
 }

@@ -1,29 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { HandleDBExceptions } from '../database/decorators';
 import { DatabaseProvider } from '../../src/database/database.provider';
-import { PaginationDto } from './dto/pagination.dto';
 import { RowDataPacket } from 'mysql2';
 import { ListProductsDto } from './dto/list-products.dto';
+import { ProductSortColumn } from './entities/product-sort-column.entity';
+import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
 
 @Injectable()
 export class ProductRepository {
   constructor(private db: DatabaseProvider) { }
-  private sortMapper = {
+  private sortMapper: Record<ProductSortColumn, string> = {
     category: 'pc.code',
     price: 'pl.price',
   };
 
   @HandleDBExceptions()
-  async findManyPaginated({
+  async listProductsPaginated({
     sortBy,
     sortOrder,
     page,
     pageSize,
-  }: PaginationDto): Promise<ListProductsDto[]> {
-    const sortColumn = this.sortMapper[sortBy as 'category'];
-    console.log(sortColumn, sortOrder);
+  }: ListProductPaginationDto): Promise<{
+    total: number;
+    rows: ListProductsDto[];
+  }> {
+    const sortColumn = sortBy ? this.sortMapper[sortBy] : 'p.id';
 
-    const query = `
+    const where = `
+      WHERE
+        p.qty > 0 
+        AND p.productStateId = 3 
+        AND p.imageUrl IS NOT NULL
+        AND pl.price IS NOT NULL AND pl.price > 0
+        AND pl.fromDate < CURRENT_DATE() AND pl.toDate > CURRENT_DATE()
+    `;
+
+    const countQuery = `
+      SELECT COUNT(*) AS total
+      FROM products p
+      INNER JOIN price_list pl ON p.id = pl.productId
+      INNER JOIN product_category pc ON p.productCategoryId = pc.id
+      ${where} 
+    `;
+
+    const dataQuery = `
       SELECT 
         p.*, 
         JSON_OBJECT(
@@ -38,20 +58,20 @@ export class ProductRepository {
       FROM products as p
       INNER JOIN price_list as pl ON p.id = pl.productId
       INNER JOIN product_category as pc ON p.productCategoryId = pc.id
-      WHERE
-        p.qty > 0 
-        AND p.productStateId = 3 
-        AND p.imageUrl IS NOT NULL
-        AND pl.price IS NOT NULL AND pl.price > 0
-        AND pl.fromDate < CURRENT_DATE() AND pl.toDate > CURRENT_DATE()
+      ${where}
       ORDER BY ${sortColumn} ${sortOrder}
       LIMIT ?, ?;
       `;
 
+    const [[{ total }]] =
+      await this.db.connection.query<({ total: number } & RowDataPacket)[]>(
+        countQuery,
+      );
+
     const [rows] = await this.db.connection.query<
       (ListProductsDto & RowDataPacket)[]
-    >(query, [(page - 1) * pageSize, pageSize]);
+    >(dataQuery, [(page - 1) * pageSize, pageSize]);
 
-    return rows;
+    return { total, rows };
   }
 }

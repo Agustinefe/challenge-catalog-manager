@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Query, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
 import { ProductService } from './product.service';
 import {
   ApiBearerAuth,
@@ -6,8 +6,9 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { PaginationDto } from './dto/pagination.dto';
 import { ListProductsDto } from './dto/list-products.dto';
+import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
+import { ListProductsResponseDto } from './dto/list-products.response.dto';
 
 @ApiTags('Product')
 @Controller('product')
@@ -29,8 +30,8 @@ export class ProductController {
         transformOptions: { enableImplicitConversion: true },
       }),
     )
-    paginationDto: PaginationDto,
-  ): Promise<ListProductsDto[]> {
+    paginationDto: ListProductPaginationDto,
+  ): Promise<ListProductsResponseDto> {
     return await this.productService.listProducts(paginationDto);
   }
 }
