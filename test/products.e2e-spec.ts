@@ -1,40 +1,114 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import request from 'supertest';
 import { TestHelper } from './helpers/test-app.helper';
 import { JwtService } from '@nestjs/jwt';
-import { UserSessionRepository } from '../src/auth/user-session.repository';
-import { UsersRepository } from '../src/users/users.repository';
+import { v4 as uuidv4 } from 'uuid';
+import { ListProductsResponseDto } from 'src/product/dto/list-products.response.dto';
 
 describe('ProductsController (e2e)', () => {
   let context: TestHelper;
-
-  let authSaveSpy: jest.SpyInstance;
-  let userFindByEmailSpy: jest.SpyInstance;
-  let authDeleteSpy: jest.SpyInstance;
+  let jwtService: JwtService;
+  let commonAccessToken: string;
 
   beforeAll(async () => {
     context = await TestHelper.initTestApp();
-    authSaveSpy = jest.spyOn(context.app.get(UserSessionRepository), 'create');
-    authDeleteSpy = jest.spyOn(
-      context.app.get(UserSessionRepository),
-      'deleteByToken',
-    );
-    userFindByEmailSpy = jest.spyOn(
-      context.app.get(UsersRepository),
-      'findByEmail',
-    );
+
+    jwtService = new JwtService({
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
+      signOptions: {
+        expiresIn: 3600,
+      },
+    });
   });
 
   afterAll(async () => {
     await context.closeTestApp();
-    authSaveSpy.mockRestore();
-    userFindByEmailSpy.mockRestore();
-    authDeleteSpy.mockRestore();
   });
 
   beforeEach(async () => {
+    commonAccessToken = jwtService.sign({
+      username: 'user1',
+      email: 'user1@example.com',
+      tokenId: uuidv4(),
+    });
     await context.resetTestApp();
-    authSaveSpy.mockClear();
-    userFindByEmailSpy.mockClear();
-    authDeleteSpy.mockClear();
+  });
+
+  describe('GET /product', () => {
+    it('should return an empty array when no products exists', async () => {
+      const response = await request(context.app.getHttpServer())
+        .get('/product?page=1&pageSize=5&sortBy=price&sortOrder=DESC')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as ListProductsResponseDto;
+      expect(responseBody.data).toEqual([]);
+    });
+
+    it('should return the first page with two products', async () => {
+      await context.seedTestApp();
+      const response = await request(context.app.getHttpServer())
+        .get('/product?page=1&pageSize=2')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as ListProductsResponseDto;
+      expect(responseBody.data.length).toBe(2);
+      expect(responseBody.meta.totalItems).toBe(3);
+      expect(responseBody.meta.pageSize).toBe(2);
+    });
+
+    it('should return the second page with just one products', async () => {
+      await context.seedTestApp();
+      const response = await request(context.app.getHttpServer())
+        .get('/product?page=2&pageSize=2')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as ListProductsResponseDto;
+      expect(responseBody.data.length).toBe(1);
+      expect(responseBody.meta.totalItems).toBe(3);
+      expect(responseBody.meta.pageSize).toBe(2);
+    });
+
+    it('should throw Bad Request Exception when pagination is not present', async () => {
+      await request(context.app.getHttpServer())
+        .get('/product?pageSize=2')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
+
+      await request(context.app.getHttpServer())
+        .get('/product?page=1')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
+    });
+
+    it('should throw Bad Request Exception when pagination is not a number', async () => {
+      await request(context.app.getHttpServer())
+        .get('/product?page=abc&pageSize=2')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
+
+      await request(context.app.getHttpServer())
+        .get('/product?page=2&pageSize=abc')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
+    });
+
+    it('should return data ordered by price', async () => {
+      await context.seedTestApp();
+
+      const response = await request(context.app.getHttpServer())
+        .get('/product?page=1&pageSize=5&sortBy=price&sortOrder=DESC')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as ListProductsResponseDto;
+      expect(responseBody.data.length).not.toBe(0);
+      const priceArray = responseBody.data.map((p) => p.currentPrice.price);
+      expect(responseBody.data.map((p) => p.currentPrice.price)).toStrictEqual([
+        8, 8, 7,
+      ]);
+    });
   });
 });

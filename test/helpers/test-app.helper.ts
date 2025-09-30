@@ -52,4 +52,8 @@ export class TestHelper {
     await this.dataSource.dropDatabase();
     await this.dataSource.synchronize();
   }
+
+  public async seedTestApp(): Promise<void> {
+    await this.dataSource.seed();
+  }
 }
