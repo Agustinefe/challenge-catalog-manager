@@ -5,7 +5,7 @@ export class GetProductBySlugQueryDto {
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Max(10)
+  @Max(20)
   @Type(() => Number)
-  limit: number = 5;
+  limit: number = 10;
 }
