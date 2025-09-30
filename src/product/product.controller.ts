@@ -10,6 +10,7 @@ import { ListProductsDto } from './dto/list-products.dto';
 import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
 import { ListProductsResponseDto } from './dto/list-products.response.dto';
 import { GetProductBySlugResponseDto } from './dto/get-product-by-slug.response.dto';
+import { GetProductBySlugQueryDto } from './dto/get-product-by-slug-query.dto';
 
 @ApiTags('Product')
 @Controller('product')
@@ -45,7 +46,14 @@ export class ProductController {
   @Get(':slug')
   async getProductBySlug(
     @Param('slug') slug: string,
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
+    queryDto: GetProductBySlugQueryDto,
   ): Promise<GetProductBySlugResponseDto> {
-    return await this.productService.getProductBySlug(slug);
+    return await this.productService.getProductBySlug(slug, queryDto.limit);
   }
 }

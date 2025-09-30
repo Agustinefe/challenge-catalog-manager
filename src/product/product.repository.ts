@@ -109,13 +109,16 @@ export class ProductRepository {
       LIMIT ?
     `;
 
+    const beforeLimit = Math.floor(limit / 2);
+    const afterLimit = limit - beforeLimit;
+
     const [before] = await this.db.connection.query<
       (Product & RowDataPacket)[]
-    >(beforeQuery, [slug, limit]);
+    >(beforeQuery, [slug, beforeLimit]);
 
     const [after] = await this.db.connection.query<(Product & RowDataPacket)[]>(
       afterQuery,
-      [slug, limit],
+      [slug, afterLimit],
     );
 
     return before.concat(after);

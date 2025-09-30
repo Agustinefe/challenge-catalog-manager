@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
 import { ListProductsResponseDto } from './dto/list-products.response.dto';
@@ -25,28 +25,37 @@ export class ProductService {
     };
   }
 
-  async getProductBySlug(slug: string): Promise<GetProductBySlugResponseDto> {
+  async getProductBySlug(
+    slug: string,
+    limit: number,
+  ): Promise<GetProductBySlugResponseDto> {
     const product = await this.productRepository.findProductBySlug(slug);
     if (product)
       return {
         product,
-        relatedProducts: await this.getRelatedProductsTo(product),
+        relatedProducts: await this.getRelatedProductsTo(product, limit),
       };
 
     return {
       product: null,
-      relatedProducts: await this.getAlternativeProductsTo(slug),
+      relatedProducts: await this.getAlternativeProductsTo(slug, limit),
     };
   }
 
-  async getRelatedProductsTo(product: Product): Promise<Product[]> {
+  async getRelatedProductsTo(
+    product: Product,
+    limit: number,
+  ): Promise<Product[]> {
     return await this.productRepository.findNProductsNearToSlug(
       product.slug,
-      2,
+      limit,
     );
   }
 
-  async getAlternativeProductsTo(slug: string): Promise<Product[]> {
-    return await this.productRepository.findNProductsNearToSlug(slug, 2);
+  async getAlternativeProductsTo(
+    slug: string,
+    limit: number,
+  ): Promise<Product[]> {
+    return await this.productRepository.findNProductsNearToSlug(slug, limit);
   }
 }
