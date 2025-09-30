@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2/promise';
 import data from '../../../init-data/lista_precio.json';
 import BaseSeeder from './base.seed';
-import { ProductPrice } from '../../../src/product/entities/price.entity';
+import { ProductPrice } from '../../product/entities/product-price.entity';
 
 export default class PriceListSeeder extends BaseSeeder<ProductPrice> {
   constructor(conn: mysql.Connection) {

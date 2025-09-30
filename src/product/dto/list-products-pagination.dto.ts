@@ -2,7 +2,7 @@ import { IsEnum, IsOptional } from 'class-validator';
 import { SortOrder } from '../../common/dto/sort-order.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductSortColumn } from '../../product/entities/product-sort-column.entity';
-import { PaginableDto } from 'src/common/dto/paginable.dto';
+import { PaginableDto } from '../../../src/common/dto/paginable.dto';
 
 export class ListProductPaginationDto extends PaginableDto {
   @ApiProperty({
