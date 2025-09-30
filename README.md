@@ -74,5 +74,6 @@ To find an example of the values you can use [.env.example](.env.example)
 
 ## TODO list:
 
+- Explain that the tables and fields has been translated to English
 - Explain why the slug is generated and stored in the db
 - Explain how I calculate the related products.

@@ -42,6 +42,12 @@ export class ProductController {
     description:
       'Gets a product detail by slug, and a list of related products',
   })
+  @ApiOkResponse({
+    description:
+      'Returns the matched product (or null if there is no match), and a list of related products',
+    type: GetProductBySlugResponseDto,
+    isArray: false,
+  })
   @ApiBearerAuth()
   @Get(':slug')
   async getProductBySlug(
