@@ -123,4 +123,68 @@ export class ProductRepository {
 
     return before.concat(after);
   }
+
+  async getProductsBySkuAndDescription(
+    { sortBy, sortOrder, page, pageSize }: ListProductPaginationDto,
+    sku?: string,
+    description?: string,
+  ): Promise<{
+    total: number;
+    rows: ListProductsDto[];
+  }> {
+    const sortColumn = sortBy ? this.sortMapper[sortBy] : 'p.id';
+    const filters = [];
+
+    if (sku) {
+      filters.push(`p.sku LIKE '%${sku}%'`);
+    }
+
+    if (description) {
+      filters.push(
+        `p.shortDescription LIKE '%${description}%' OR p.longDescription LIKE '%${description}%'`,
+      );
+    }
+
+    const where = filters.length > 0 ? `WHERE ${filters.join(' OR ')}` : '';
+
+    const countQuery = `
+      SELECT COUNT(*) AS total
+      FROM products p
+      LEFT JOIN price_list pl ON p.id = pl.productId
+      LEFT JOIN product_category pc ON p.productCategoryId = pc.id
+      ${where} 
+    `;
+
+    const dataQuery = `
+      SELECT 
+        p.*, 
+        JSON_OBJECT(
+          'id', pl.id,
+          'price', pl.price
+        ) AS currentPrice,
+        JSON_OBJECT(
+          'id', pc.id,
+          'code', pc.code,
+          'description', pc.description
+        ) AS category 
+      FROM products as p
+      LEFT JOIN price_list as pl ON p.id = pl.productId
+      LEFT JOIN product_category as pc ON p.productCategoryId = pc.id
+      ${where}
+      ORDER BY ${sortColumn} ${sortOrder}
+      LIMIT ${(page - 1) * pageSize}, ${pageSize};
+    `;
+
+    const [[{ total }]] =
+      await this.db.connection.query<({ total: number } & RowDataPacket)[]>(
+        countQuery,
+      );
+
+    const [rows] =
+      await this.db.connection.query<(ListProductsDto & RowDataPacket)[]>(
+        dataQuery,
+      );
+
+    return { total, rows };
+  }
 }

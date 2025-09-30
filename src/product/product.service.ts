@@ -33,16 +33,16 @@ export class ProductService {
     if (product)
       return {
         product,
-        relatedProducts: await this.getRelatedProductsTo(product, limit),
+        relatedProducts: await this.getProductsRelatedTo(product, limit),
       };
 
     return {
       product: null,
-      relatedProducts: await this.getAlternativeProductsTo(slug, limit),
+      relatedProducts: await this.getAlternativeProductsFor(slug, limit),
     };
   }
 
-  async getRelatedProductsTo(
+  async getProductsRelatedTo(
     product: Product,
     limit: number,
   ): Promise<Product[]> {
@@ -52,10 +52,32 @@ export class ProductService {
     );
   }
 
-  async getAlternativeProductsTo(
+  async getAlternativeProductsFor(
     slug: string,
     limit: number,
   ): Promise<Product[]> {
     return await this.productRepository.findNProductsNearToSlug(slug, limit);
+  }
+
+  async getProductsBySkuAndDescription(
+    paginationDto: ListProductPaginationDto,
+    sku?: string,
+    description?: string,
+  ): Promise<ListProductsResponseDto> {
+    const { total, rows } =
+      await this.productRepository.getProductsBySkuAndDescription(
+        paginationDto,
+        sku,
+        description,
+      );
+    return {
+      data: rows,
+      meta: {
+        totalItems: total,
+        count: rows.length,
+        pageSize: paginationDto.pageSize,
+        page: paginationDto.page,
+      },
+    };
   }
 }
