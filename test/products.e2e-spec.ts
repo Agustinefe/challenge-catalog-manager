@@ -4,6 +4,7 @@ import { TestHelper } from './helpers/test-app.helper';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { ListProductsResponseDto } from 'src/product/dto/list-products.response.dto';
+import { GetProductBySlugResponseDto } from 'src/product/dto/get-product-by-slug.response.dto';
 
 describe('ProductsController (e2e)', () => {
   let context: TestHelper;
@@ -145,6 +146,63 @@ describe('ProductsController (e2e)', () => {
         idx === 0 ? true : current >= categoryArray[idx - 1],
       );
       expect(isOrderedByCategory).toBeTruthy();
+    });
+  });
+
+  describe('GET /product/:slug', () => {
+    it('should throw Bad Request Exception if slug is empty', async () => {
+      await request(context.app.getHttpServer())
+        .get(`/product/?limit=4`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
+    });
+
+    it('should find the product by slug and bring related products', async () => {
+      await context.seedTestApp();
+      const slug = 'hola-argentina-ed-398';
+      const limit = 4;
+
+      const response = await request(context.app.getHttpServer())
+        .get(`/product/${slug}?limit=${limit}`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as GetProductBySlugResponseDto;
+      expect(responseBody.product).not.toBeNull();
+      expect(responseBody.product!.slug).toEqual(slug);
+      expect(responseBody.relatedProducts.length).not.toBeGreaterThan(limit);
+    });
+
+    it('should find the nearest products to slug when ordering by it', async () => {
+      await context.seedTestApp();
+      const slug = 'hola-argentina-ed-398';
+      const limit = 4;
+      const expectedRelatedProductsIdSorted = [2, 5, 7, 11]; // The most related product ids, sorted by them
+
+      const response = await request(context.app.getHttpServer())
+        .get(`/product/${slug}?limit=${limit}`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as GetProductBySlugResponseDto;
+      expect(responseBody.product).not.toBeNull();
+      expect(responseBody.product!.slug).toEqual(slug);
+      expect(
+        responseBody.relatedProducts.map((p) => p.id).sort((a, b) => a - b),
+      ).toStrictEqual(expectedRelatedProductsIdSorted);
+    });
+
+    it('should throw Bad Request Exception if limit is above max limit', async () => {
+      await request(context.app.getHttpServer())
+        .get(`/product/hola-argentina-ed-398?limit=50`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
+    });
+    it('should throw Bad Request Exception if limit is below min limit', async () => {
+      await request(context.app.getHttpServer())
+        .get(`/product/hola-argentina-ed-398?limit=0`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(400);
     });
   });
 });
