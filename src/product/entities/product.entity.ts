@@ -3,6 +3,7 @@ export class Product {
   sku: string;
   shortDescription: string;
   longDescription: string;
+  slug: string;
   qty: number | null;
   imageUrl: string | null;
   productTypeId: number;

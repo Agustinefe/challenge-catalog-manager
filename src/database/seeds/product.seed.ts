@@ -8,6 +8,15 @@ export default class ProductSeeder extends BaseSeeder<Product> {
     super(conn);
   }
 
+  // Implemented by Sling Academy in https://www.slingacademy.com/article/javascript-how-to-convert-a-string-to-a-url-slug/#using-regular-expressions
+  private generateSlug(longDescription: string): string {
+    return longDescription
+      .trim()
+      .toLowerCase()
+      .replace(/[\W_]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
   public async createTable(): Promise<void> {
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS products (
@@ -15,6 +24,7 @@ export default class ProductSeeder extends BaseSeeder<Product> {
         sku varchar(255),
         shortDescription varchar(255),
         longDescription varchar(255),
+        slug varchar(255),
         qty integer,
         imageUrl varchar(255),
         productTypeId integer NOT NULL,
@@ -47,6 +57,7 @@ export default class ProductSeeder extends BaseSeeder<Product> {
       u.sku,
       u.descripcion_corta,
       u.descripcion_larga,
+      this.generateSlug(u.descripcion_larga),
       u.qty,
       u.ubicacion_imagen,
       u.producto_tipo_id,
@@ -59,6 +70,7 @@ export default class ProductSeeder extends BaseSeeder<Product> {
       'sku',
       'shortDescription',
       'longDescription',
+      'slug',
       'qty',
       'imageUrl',
       'productTypeId',

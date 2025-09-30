@@ -56,6 +56,15 @@ describe('ProductsController (e2e)', () => {
       expect(responseBody.data.length).toBe(2);
       expect(responseBody.meta.totalItems).toBe(3);
       expect(responseBody.meta.pageSize).toBe(2);
+
+      expect(responseBody.data.every((p) => p.qty && p.qty > 0)).toBeTruthy();
+      expect(
+        responseBody.data.every((p) => p.productStateId === 3),
+      ).toBeTruthy();
+      expect(responseBody.data.every((p) => p.imageUrl)).toBeTruthy();
+      expect(
+        responseBody.data.every((p) => p.currentPrice.price > 0),
+      ).toBeTruthy();
     });
 
     it('should return the second page with just one products', async () => {
@@ -69,6 +78,15 @@ describe('ProductsController (e2e)', () => {
       expect(responseBody.data.length).toBe(1);
       expect(responseBody.meta.totalItems).toBe(3);
       expect(responseBody.meta.pageSize).toBe(2);
+
+      expect(responseBody.data.every((p) => p.qty && p.qty > 0)).toBeTruthy();
+      expect(
+        responseBody.data.every((p) => p.productStateId === 3),
+      ).toBeTruthy();
+      expect(responseBody.data.every((p) => p.imageUrl)).toBeTruthy();
+      expect(
+        responseBody.data.every((p) => p.currentPrice.price > 0),
+      ).toBeTruthy();
     });
 
     it('should throw Bad Request Exception when pagination is not present', async () => {
@@ -95,7 +113,7 @@ describe('ProductsController (e2e)', () => {
         .expect(400);
     });
 
-    it('should return data ordered by price', async () => {
+    it('should return data ordered by price descending', async () => {
       await context.seedTestApp();
 
       const response = await request(context.app.getHttpServer())
@@ -106,9 +124,27 @@ describe('ProductsController (e2e)', () => {
       const responseBody = response.body as ListProductsResponseDto;
       expect(responseBody.data.length).not.toBe(0);
       const priceArray = responseBody.data.map((p) => p.currentPrice.price);
-      expect(responseBody.data.map((p) => p.currentPrice.price)).toStrictEqual([
-        8, 8, 7,
-      ]);
+      const isOrderedByPrice = priceArray.every((current, idx) =>
+        idx === 0 ? true : current <= priceArray[idx - 1],
+      );
+      expect(isOrderedByPrice).toBeTruthy();
+    });
+
+    it('should return data ordered by category ascending', async () => {
+      await context.seedTestApp();
+
+      const response = await request(context.app.getHttpServer())
+        .get('/product?page=1&pageSize=5&sortBy=category')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as ListProductsResponseDto;
+      expect(responseBody.data.length).not.toBe(0);
+      const categoryArray = responseBody.data.map((p) => p.category.code);
+      const isOrderedByCategory = categoryArray.every((current, idx) =>
+        idx === 0 ? true : current >= categoryArray[idx - 1],
+      );
+      expect(isOrderedByCategory).toBeTruthy();
     });
   });
 });

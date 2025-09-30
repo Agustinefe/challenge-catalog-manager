@@ -4,6 +4,7 @@ export class ProductDto {
   shortDescription: string;
   longDescription: string;
   qty: number | null;
+  slug: string;
   imageUrl: string | null;
   productTypeId: number;
   productCategoryId: number;

@@ -71,3 +71,7 @@ npm run seed
 ## Env vars that should be defined
 
 To find an example of the values you can use [.env.example](.env.example)
+
+## TODO list:
+
+- Explain why the slug is generated and stored in the db

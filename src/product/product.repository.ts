@@ -5,6 +5,7 @@ import { RowDataPacket } from 'mysql2';
 import { ListProductsDto } from './dto/list-products.dto';
 import { ProductSortColumn } from './entities/product-sort-column.entity';
 import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
+import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductRepository {
@@ -73,5 +74,50 @@ export class ProductRepository {
     >(dataQuery, [(page - 1) * pageSize, pageSize]);
 
     return { total, rows };
+  }
+
+  async findProductBySlug(slug: string): Promise<Product | null> {
+    const query = `
+      SELECT * FROM products
+      WHERE slug = ?
+      LIMIT 1
+    `;
+
+    const [rows] = await this.db.connection.query<(Product & RowDataPacket)[]>(
+      query,
+      [slug],
+    );
+
+    return rows.length === 0 ? null : rows[0];
+  }
+
+  async findNProductsNearToSlug(
+    slug: string,
+    limit: number,
+  ): Promise<Product[]> {
+    const beforeQuery = `
+      SELECT * FROM products 
+      WHERE slug < ?
+      ORDER BY slug DESC 
+      LIMIT ?
+    `;
+
+    const afterQuery = `
+      SELECT * FROM products 
+      WHERE slug > ?
+      ORDER BY slug ASC 
+      LIMIT ?
+    `;
+
+    const [before] = await this.db.connection.query<
+      (Product & RowDataPacket)[]
+    >(beforeQuery, [slug, limit]);
+
+    const [after] = await this.db.connection.query<(Product & RowDataPacket)[]>(
+      afterQuery,
+      [slug, limit],
+    );
+
+    return before.concat(after);
   }
 }
