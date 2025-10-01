@@ -39,18 +39,17 @@ export class ProductRepository {
           'id', pc.id,
           'code', pc.code,
           'description', pc.description
-        ) AS category  
+        ) AS category,  
         JSON_OBJECT(
           'id', ps.id,
-          'code', ps.code,
           'description', ps.description
         ) AS state  
       FROM products p
       INNER JOIN price_list pl ON p.id = pl.productId
       INNER JOIN product_category pc ON p.productCategoryId = pc.id
-      INNER JOIN product_state ps ON p.productStateId = ps.id
+      INNER JOIN product_status ps ON p.productStateId = ps.id
       WHERE 
-        id = ?
+        p.id = ?
         AND pl.fromDate < CURRENT_DATE() AND pl.toDate > CURRENT_DATE()
       LIMIT 1
     `;

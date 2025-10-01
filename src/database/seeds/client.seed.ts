@@ -11,7 +11,7 @@ export default class ClientSeeder extends BaseSeeder<Client> {
   public async createTable(): Promise<void> {
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS clients (
-        id integer PRIMARY KEY,
+        id integer AUTO_INCREMENT PRIMARY KEY,
         firstName varchar(255),
         lastName varchar(255),
         address varchar(255),

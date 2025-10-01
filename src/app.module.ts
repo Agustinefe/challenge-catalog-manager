@@ -8,6 +8,7 @@ import { CommonModule } from './common/common.module';
 import { ProductModule } from './product/product.module';
 import { SearchModule } from './search/search.module';
 import { OrderModule } from './order/order.module';
+import { ClientModule } from './client/client.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { OrderModule } from './order/order.module';
     ProductModule,
     SearchModule,
     OrderModule,
+    ClientModule,
   ],
 })
 export class AppModule { }

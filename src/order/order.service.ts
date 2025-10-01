@@ -8,12 +8,14 @@ import { OrderRepository } from './order.repository';
 import { CreateOrderDto, OrderDto } from './dto';
 import { ProductService } from 'src/product/product.service';
 import { ProductDto } from 'src/product/dto/product.dto';
+import { ClientService } from 'src/client/client.service';
 
 @Injectable()
 export class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly productService: ProductService,
+    private readonly clientService: ClientService,
   ) { }
 
   private validateThatProductCanBeOrdered(
@@ -49,7 +51,7 @@ export class OrderService {
   }
 
   async createOrder(createOrderDto: CreateOrderDto): Promise<OrderDto> {
-    const { productId } = createOrderDto;
+    const { productId, clientId } = createOrderDto;
     const product = await this.productService.findById(productId);
     if (!product) {
       throw new NotFoundException(`Product with ID ${productId} not found`);
@@ -58,6 +60,11 @@ export class OrderService {
       product,
       createOrderDto.requestedAmount,
     );
+
+    const client = await this.clientService.findById(clientId);
+    if (!client) {
+      throw new NotFoundException(`Client with ID ${clientId} not found`);
+    }
 
     const newOrder = await this.orderRepository.createOrder({
       ...createOrderDto,

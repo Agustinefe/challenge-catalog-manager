@@ -73,12 +73,12 @@ export class OrderRepository {
     ];
 
     const [result] = await this.db.connection.execute<ResultSetHeader>(
-      `INSERT INTO orders (${columns.join(', ')}) VALUES ?`,
-      [orders],
+      `INSERT INTO orders (${columns.join(', ')}) VALUES (?, ?, ?, ?, ?, ?)`,
+      orders,
     );
 
     const [rows] = await this.db.connection.execute<(Order & RowDataPacket)[]>(
-      'SELECT * FROM orders` WHERE `id` = ? LIMIT 1',
+      'SELECT * FROM orders WHERE `id` = ? LIMIT 1',
       [result.insertId],
     );
 
