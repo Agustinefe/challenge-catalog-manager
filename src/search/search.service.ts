@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ProductService } from '../../src/product/product.service';
 import { SearchProductQueryDto } from './dto/search-products-query.dto';
-import { ListProductsResponseDto } from 'src/product/dto/list-products.response.dto';
+import { ListProductsResponseDto } from '../../src/product/dto/list-products.response.dto';
 
 @Injectable()
 export class SearchService {

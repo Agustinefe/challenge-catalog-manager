@@ -3,7 +3,6 @@ import request from 'supertest';
 import { TestHelper } from './helpers/test-app.helper';
 import { User } from '../src/users/entities';
 import { CreateUserDto, UpdateUserDto, UserDto } from '../src/users/dto';
-import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import { UserModel } from '../src/users/models';
 
@@ -21,7 +20,6 @@ const usersData: CreateUserDto[] = [
 ];
 describe('UserController (e2e)', () => {
   let context: TestHelper;
-  let jwtService: JwtService;
   let commonAccessToken: string;
   let querySpy: jest.SpyInstance;
   let executeSpy: jest.SpyInstance;
@@ -31,12 +29,6 @@ describe('UserController (e2e)', () => {
     const conn = context.db;
     querySpy = jest.spyOn(conn, 'query');
     executeSpy = jest.spyOn(conn, 'execute');
-    jwtService = new JwtService({
-      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
-      signOptions: {
-        expiresIn: 3600,
-      },
-    });
   });
 
   afterAll(async () => {
@@ -46,10 +38,9 @@ describe('UserController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    commonAccessToken = jwtService.sign({
-      username: 'user1',
+    commonAccessToken = context.generateAccessToken({
+      id: 1,
       email: 'user1@example.com',
-      tokenId: uuidv4(),
     });
     await context.resetTestApp();
     querySpy.mockClear();

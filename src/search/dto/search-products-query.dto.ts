@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, MaxLength } from 'class-validator';
-import { ListProductPaginationDto } from 'src/product/dto/list-products-pagination.dto';
+import { ListProductPaginationDto } from '../../../src/product/dto/list-products-pagination.dto';
 
 export class SearchProductQueryDto extends ListProductPaginationDto {
   @ApiProperty({

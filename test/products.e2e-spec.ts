@@ -1,25 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import request from 'supertest';
 import { TestHelper } from './helpers/test-app.helper';
-import { JwtService } from '@nestjs/jwt';
-import { v4 as uuidv4 } from 'uuid';
-import { ListProductsResponseDto } from 'src/product/dto/list-products.response.dto';
-import { GetProductBySlugResponseDto } from 'src/product/dto/get-product-by-slug.response.dto';
+import { ListProductsResponseDto } from '../src/product/dto/list-products.response.dto';
+import { GetProductBySlugResponseDto } from '../src/product/dto/get-product-by-slug.response.dto';
 
-describe('ProductsController (e2e)', () => {
+describe('ProductController (e2e)', () => {
   let context: TestHelper;
-  let jwtService: JwtService;
   let commonAccessToken: string;
 
   beforeAll(async () => {
     context = await TestHelper.initTestApp();
-
-    jwtService = new JwtService({
-      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
-      signOptions: {
-        expiresIn: 3600,
-      },
-    });
   });
 
   afterAll(async () => {
@@ -27,10 +17,9 @@ describe('ProductsController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    commonAccessToken = jwtService.sign({
-      username: 'user1',
+    commonAccessToken = context.generateAccessToken({
+      id: 1,
       email: 'user1@example.com',
-      tokenId: uuidv4(),
     });
     await context.resetTestApp();
   });

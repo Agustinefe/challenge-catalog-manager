@@ -3,14 +3,25 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../../src/app.module';
 import { DatabaseProvider } from '../../src/database/database.provider';
 import { Connection } from 'mysql2/promise';
+import { JwtService } from '@nestjs/jwt';
+import { TokenPayload } from '../../src/auth/entities/token-payload.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 export class TestHelper {
   app: INestApplication;
   private dataSource: DatabaseProvider;
+  private jwtService: JwtService;
 
   private constructor(app: INestApplication, dataSource: DatabaseProvider) {
     this.app = app;
     this.dataSource = dataSource;
+
+    this.jwtService = new JwtService({
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
+      signOptions: {
+        expiresIn: 3600,
+      },
+    });
   }
 
   public static async initTestApp(): Promise<TestHelper> {
@@ -34,7 +45,6 @@ export class TestHelper {
       }),
     );
 
-    // Initialize the app
     await app.init();
     return new TestHelper(app, dataSource);
   }
@@ -55,5 +65,12 @@ export class TestHelper {
 
   public async seedTestApp(): Promise<void> {
     await this.dataSource.seed();
+  }
+
+  public generateAccessToken(userData: Omit<TokenPayload, 'tokenId'>): string {
+    return this.jwtService.sign({
+      ...userData,
+      tokenId: uuidv4(),
+    });
   }
 }

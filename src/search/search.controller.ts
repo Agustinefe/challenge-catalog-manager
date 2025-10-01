@@ -1,7 +1,7 @@
 import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
 import { SearchService } from './search.service';
 import { SearchProductQueryDto } from './dto/search-products-query.dto';
-import { ListProductsResponseDto } from 'src/product/dto/list-products.response.dto';
+import { ListProductsResponseDto } from '../../src/product/dto/list-products.response.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('search')
