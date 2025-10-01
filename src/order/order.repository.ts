@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseProvider } from '../../src/database/database.provider';
-import { HandleDBExceptions } from 'src/database/decorators';
+import { HandleDBExceptions } from '../../src/database/decorators';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Order } from './entities/order.entity';
 import { CreateOrderDto } from './dto';

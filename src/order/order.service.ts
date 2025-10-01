@@ -6,9 +6,9 @@ import {
 import { SearchOrdersQueryDto } from './dto/search-orders-query.dto';
 import { OrderRepository } from './order.repository';
 import { CreateOrderDto, OrderDto } from './dto';
-import { ProductService } from 'src/product/product.service';
-import { ProductDto } from 'src/product/dto/product.dto';
-import { ClientService } from 'src/client/client.service';
+import { ProductService } from '../../src/product/product.service';
+import { ProductDto } from '../../src/product/dto/product.dto';
+import { ClientService } from '../../src/client/client.service';
 
 @Injectable()
 export class OrderService {
