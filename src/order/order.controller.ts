@@ -1,9 +1,20 @@
-import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { SearchOrdersQueryDto } from './dto/search-orders-query.dto';
-import { ValidateDateRangePipe } from 'src/common/pipes/validate-date-range.pipe';
-import { OrderDto } from './dto';
+import { CreateOrderDto, OrderDto } from './dto';
 
 @Controller('order')
 export class OrderController {
@@ -19,8 +30,8 @@ export class OrderController {
     isArray: true,
   })
   @ApiBearerAuth()
-  @Get('')
-  async getProductBySlug(
+  @Get()
+  async findOrders(
     @Query(
       new ValidationPipe({
         transform: true,
@@ -30,5 +41,22 @@ export class OrderController {
     queryDto: SearchOrdersQueryDto,
   ): Promise<OrderDto[]> {
     return await this.orderService.findOrders(queryDto);
+  }
+
+  @ApiOperation({
+    summary: 'Create a new order',
+  })
+  @ApiBody({ type: CreateOrderDto })
+  @ApiOkResponse({
+    description: 'Returns the new order',
+    type: OrderDto,
+    isArray: false,
+  })
+  @ApiBearerAuth()
+  @Post()
+  async getProductBySlug(
+    @Body() createOrderDto: CreateOrderDto,
+  ): Promise<OrderDto> {
+    return await this.orderService.createOrder(createOrderDto);
   }
 }
