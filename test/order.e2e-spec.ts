@@ -3,6 +3,9 @@ import request from 'supertest';
 import { TestHelper } from './helpers/test-app.helper';
 import { ListProductsResponseDto } from '../src/product/dto/list-products.response.dto';
 import { OrderDto } from 'src/order/dto';
+import { Client } from 'src/client/entities/client.entity';
+import { RowDataPacket } from 'mysql2';
+import { SearchOrdersQueryDto } from 'src/order/dto/search-orders-query.dto';
 
 describe('OrderController (e2e)', () => {
   let context: TestHelper;
@@ -27,8 +30,9 @@ describe('OrderController (e2e)', () => {
   describe('GET /order', () => {
     it('should return an empty array when no order exists', async () => {
       const response = await request(context.app.getHttpServer())
-        .get('/order?cuit=1111111111')
+        .get('/order')
         .set('Authorization', `Bearer ${commonAccessToken}`)
+        .query({ cuit: '1111111111' })
         .expect(200);
 
       const responseBody = response.body as OrderDto[];
@@ -39,14 +43,62 @@ describe('OrderController (e2e)', () => {
       await context.seedTestApp();
       const id = 4;
       const response = await request(context.app.getHttpServer())
-        .get(`/order?id=${id}`)
+        .get(`/order`)
         .set('Authorization', `Bearer ${commonAccessToken}`)
+        .query({ id })
         .expect(200);
 
       const responseBody = response.body as OrderDto[];
       expect(responseBody.length).toBe(1);
       const order = responseBody[0];
       expect(order.id).toBe(id);
+    });
+
+    it('should return the orders by cuit', async () => {
+      await context.seedTestApp();
+
+      const [rows] = await context.db.query<(Client & RowDataPacket)[]>(
+        'SELECT * FROM clients WHERE id = 1 LIMIT 1',
+      );
+      expect(rows.length).toBe(1);
+      const { cuit, id } = rows[0];
+
+      const response = await request(context.app.getHttpServer())
+        .get(`/order`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .query({ cuit })
+        .expect(200);
+
+      const orders = response.body as OrderDto[];
+      expect(orders.length).toBe(2);
+      expect(orders.every((o) => o.clientId === id)).toBeTruthy();
+    });
+
+    it('should return the orders between the given issue dates', async () => {
+      await context.seedTestApp();
+
+      const query: SearchOrdersQueryDto = {
+        createdAtMin: new Date(2025, 10, 1),
+        createdAtMax: new Date(2025, 11, 1),
+      };
+
+      const response = await request(context.app.getHttpServer())
+        .get(`/order`)
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .query(query)
+        .expect(200);
+
+      const orders = response.body as OrderDto[];
+      expect(orders.length).toBe(3);
+      expect(
+        orders
+          .map((o) => ({ ...o, issueDate: new Date(o.issueDate) }))
+          .every(
+            (o) =>
+              query.createdAtMin!.getTime() <= o.issueDate.getTime() &&
+              query.createdAtMax!.getTime() >= o.issueDate.getTime(),
+          ),
+      ).toBeTruthy();
     });
 
     /* it('should return the first and second page with two products which description includes the search', async () => {

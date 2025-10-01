@@ -12,7 +12,7 @@ export default class OrderSeeder extends BaseSeeder<Order> {
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS orders (
         id integer AUTO_INCREMENT PRIMARY KEY,
-        issueDate timestamp DEFAULT CURRENT_TIMESTAMP,
+        issueDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         price decimal,
         deliveryClass varchar(255),
         appliedPaymentCondition varchar(255),

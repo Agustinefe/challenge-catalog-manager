@@ -13,8 +13,8 @@ export default class PriceListSeeder extends BaseSeeder<ProductPrice> {
       CREATE TABLE IF NOT EXISTS price_list (
         id integer PRIMARY KEY,
         price decimal,
-        fromDate timestamp,
-        toDate timestamp,
+        fromDate TIMESTAMP,
+        toDate TIMESTAMP,
         productId integer NOT NULL
       );
     `;

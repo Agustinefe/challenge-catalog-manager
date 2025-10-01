@@ -22,4 +22,18 @@ export const dataSourceConfig: ConnectionOptions & {
   password,
   database,
   shouldSynchronize,
+  timezone: 'Z',
+  typeCast(field, next) {
+    let val;
+    switch (field.type) {
+      case 'DATETIME':
+        val = field.string();
+        return val ? new Date(val) : null;
+      case 'NEWDECIMAL':
+        val = field.string();
+        return val === null ? null : Number(val);
+      default:
+        return next();
+    }
+  },
 };
