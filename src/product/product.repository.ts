@@ -76,6 +76,7 @@ export class ProductRepository {
     return { total, rows };
   }
 
+  @HandleDBExceptions()
   async findProductBySlug(slug: string): Promise<Product | null> {
     const query = `
       SELECT * FROM products
@@ -91,6 +92,7 @@ export class ProductRepository {
     return rows.length === 0 ? null : rows[0];
   }
 
+  @HandleDBExceptions()
   async findNProductsNearToSlug(
     slug: string,
     limit: number,
@@ -124,6 +126,7 @@ export class ProductRepository {
     return before.concat(after);
   }
 
+  @HandleDBExceptions()
   async getProductsBySkuAndDescription(
     { sortBy, sortOrder, page, pageSize }: ListProductPaginationDto,
     sku?: string,

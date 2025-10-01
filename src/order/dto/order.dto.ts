@@ -3,24 +3,30 @@ import {
   IsDateString,
   IsInt,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
   MaxLength,
   Min,
 } from 'class-validator';
 
-export class CreateOrderDto {
+export class OrderDto {
+  @ApiProperty({
+    description: 'Unique identifier for the order',
+    example: 1,
+    minimum: 1,
+  })
+  @IsInt()
+  @IsPositive()
+  id: number;
+
   @ApiProperty({
     description: 'Date when the order was issued',
     example: '2024-01-15T10:30:00Z',
     type: 'string',
     format: 'date-time',
-    required: false,
   })
-  @IsOptional()
   @IsDateString()
-  issueDate?: Date;
+  issueDate: Date;
 
   @ApiProperty({
     description: 'Total price of the order',
