@@ -4,5 +4,7 @@ export class Order {
   price: number;
   deliveryClass: string;
   appliedPaymentCondition: string;
-  clientId: 
+  clientId: number;
+  productId: number;
+  requestedAmount: number;
 }
