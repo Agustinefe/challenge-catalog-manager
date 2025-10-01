@@ -6,6 +6,7 @@ import ProductCategorySeeder from './product-category.seed';
 import ProductStatusSeeder from './product-status.seed';
 import ProductSeeder from './product.seed';
 import PriceListSeeder from './price-list.seed';
+import ClientSeeder from './client.seed';
 
 export class DatabaseSetup {
   private readonly userSeeder: UserSeeder;
@@ -15,6 +16,7 @@ export class DatabaseSetup {
   private readonly productStatusSeeder: ProductStatusSeeder;
   private readonly productSeeder: ProductSeeder;
   private readonly priceListSeeder: PriceListSeeder;
+  private readonly clientSeeder: ClientSeeder;
 
   constructor(private readonly connection: Connection) {
     this.userSeeder = new UserSeeder(this.connection);
@@ -24,6 +26,7 @@ export class DatabaseSetup {
     this.productStatusSeeder = new ProductStatusSeeder(this.connection);
     this.productSeeder = new ProductSeeder(this.connection);
     this.priceListSeeder = new PriceListSeeder(this.connection);
+    this.clientSeeder = new ClientSeeder(this.connection);
   }
 
   async dropTables(): Promise<void> {
@@ -37,6 +40,8 @@ export class DatabaseSetup {
     await this.productTypeSeeder.dropTable();
     await this.productCategorySeeder.dropTable();
     await this.productStatusSeeder.dropTable();
+
+    await this.clientSeeder.dropTable();
   }
 
   async createTables(): Promise<void> {
@@ -50,6 +55,8 @@ export class DatabaseSetup {
     await this.productSeeder.createTable();
 
     await this.priceListSeeder.createTable();
+
+    await this.clientSeeder.createTable();
   }
 
   async seedTables(): Promise<void> {
@@ -62,5 +69,6 @@ export class DatabaseSetup {
     await this.productSeeder.populate();
 
     await this.priceListSeeder.populate();
+    await this.clientSeeder.populate();
   }
 }

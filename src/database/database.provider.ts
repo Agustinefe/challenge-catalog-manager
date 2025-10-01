@@ -1,13 +1,6 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import * as mysql from 'mysql2/promise';
 import { dataSourceConfig } from '../../src/data-source';
-import UserSeeder from './seeds/user.seed';
-import UserSessionSeeder from './seeds/user-session.seed';
-import ProductTypeSeeder from './seeds/product-type.seed';
-import ProductCategorySeeder from './seeds/product-category.seed';
-import ProductStatusSeeder from './seeds/product-status.seed';
-import ProductSeeder from './seeds/product.seed';
-import PriceListSeeder from './seeds/price-list.seed';
 import { DatabaseSetup } from './seeds/database-setup';
 
 @Injectable()
