@@ -38,7 +38,7 @@ export default class OrderSeeder extends BaseSeeder<Order> {
   }
 
   public async populate(): Promise<Order[]> {
-    const products = data.map((o) => [
+    const orders = data.map((o) => [
       o.id,
       o.fecha_circulacion,
       o.precio,
@@ -62,7 +62,7 @@ export default class OrderSeeder extends BaseSeeder<Order> {
 
     await this.conn.query(
       `INSERT INTO orders (${columns.join(', ')}) VALUES ?`,
-      [products],
+      [orders],
     );
 
     const [rows] = await this.conn.execute<(Order & mysql.RowDataPacket)[]>(

@@ -1,13 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
 import { ListProductsResponseDto } from './dto/list-products.response.dto';
 import { Product } from './entities/product.entity';
 import { GetProductBySlugResponseDto } from './dto/get-product-by-slug.response.dto';
+import { ProductDetailsDto } from './dto/product-details.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductDto } from './dto/product.dto';
 
 @Injectable()
 export class ProductService {
   constructor(private productRepository: ProductRepository) { }
+
+  async findById(id: number): Promise<ProductDetailsDto | null> {
+    return await this.productRepository.findProductWithDetails(id);
+  }
 
   async listProducts(
     paginationDto: ListProductPaginationDto,
@@ -79,5 +86,15 @@ export class ProductService {
         page: paginationDto.page,
       },
     };
+  }
+
+  async update(
+    id: number,
+    updateProductDto: UpdateProductDto,
+  ): Promise<ProductDto> {
+    const product = await this.productRepository.update(id, updateProductDto);
+    if (!product)
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    return product;
   }
 }

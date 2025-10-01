@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseProvider } from '../../src/database/database.provider';
 import { HandleDBExceptions } from 'src/database/decorators';
-import { RowDataPacket } from 'mysql2';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Order } from './entities/order.entity';
+import { CreateOrderDto } from './dto';
 
 @Injectable()
 export class OrderRepository {
@@ -50,7 +51,43 @@ export class OrderRepository {
     return rows;
   }
 
-  /* async createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
-    const data = [createOrderDto.issueDate];
-  } */
+  async createOrder(
+    createOrderDto: CreateOrderDto & { price: number },
+  ): Promise<Order> {
+    const orders = [
+      createOrderDto.price,
+      createOrderDto.deliveryClass,
+      createOrderDto.appliedPaymentCondition,
+      createOrderDto.clientId,
+      createOrderDto.productId,
+      createOrderDto.requestedAmount,
+    ];
+
+    const columns = [
+      'price',
+      'deliveryClass',
+      'appliedPaymentCondition',
+      'clientId',
+      'productId',
+      'requestedAmount',
+    ];
+
+    const [result] = await this.db.connection.execute<ResultSetHeader>(
+      `INSERT INTO orders (${columns.join(', ')}) VALUES ?`,
+      [orders],
+    );
+
+    const [rows] = await this.db.connection.execute<(Order & RowDataPacket)[]>(
+      'SELECT * FROM orders` WHERE `id` = ? LIMIT 1',
+      [result.insertId],
+    );
+
+    return rows[0];
+  }
+
+  @HandleDBExceptions()
+  async remove({ id }: Order): Promise<void> {
+    const query = 'DELETE FROM orders WHERE `id` = ? LIMIT 1';
+    await this.db.connection.execute(query, [id]);
+  }
 }

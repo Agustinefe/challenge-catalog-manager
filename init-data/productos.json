@@ -8,7 +8,8 @@
     "ubicacion_imagen": null,
     "producto_tipo_id": 1,
     "producto_categoria_id": 1,
-    "producto_estado_id": 1
+    "producto_estado_id": 1,
+    "fecha_creacion": "2025-05-07 00:00:00.000000"
   },
   {
     "id": 2,
@@ -19,7 +20,8 @@
     "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/HOL11020300373.jpg",
     "producto_tipo_id": 2,
     "producto_categoria_id": 3,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-09-27 00:00:00.000000"
   },
   {
     "id": 3,
@@ -30,7 +32,8 @@
     "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/JAR11021400001.jpg",
     "producto_tipo_id": 2,
     "producto_categoria_id": 4,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-05-07 00:00:00.000000"
   },
   {
     "id": 4,
@@ -41,7 +44,8 @@
     "ubicacion_imagen": null,
     "producto_tipo_id": 1,
     "producto_categoria_id": 3,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-05-17 00:00:00.000000"
   },
   {
     "id": 5,
@@ -52,7 +56,8 @@
     "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/OPC13066300001.jpg",
     "producto_tipo_id": 3,
     "producto_categoria_id": 12,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-06-09 00:00:00.000000"
   },
   {
     "id": 6,
@@ -63,7 +68,8 @@
     "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/OPC11092810014.jpg",
     "producto_tipo_id": 3,
     "producto_categoria_id": 14,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-01-09 00:00:00.000000"
   },
   {
     "id": 7,
@@ -74,7 +80,8 @@
     "ubicacion_imagen": "https://dev-media-admin/media-folder/imagenes/HOL11020300406.jpg",
     "producto_tipo_id": 2,
     "producto_categoria_id": 3,
-    "producto_estado_id": 1
+    "producto_estado_id": 1,
+    "fecha_creacion": "2025-03-19 00:00:00.000000"
   },
   {
     "id": 8,
@@ -85,7 +92,8 @@
     "ubicacion_imagen": null,
     "producto_tipo_id": 1,
     "producto_categoria_id": 2,
-    "producto_estado_id": 1
+    "producto_estado_id": 1,
+    "fecha_creacion": "2025-03-19 00:00:00.000000"
   },
   {
     "id": 9,
@@ -96,7 +104,8 @@
     "ubicacion_imagen": null,
     "producto_tipo_id": 1,
     "producto_categoria_id": 2,
-    "producto_estado_id": 1
+    "producto_estado_id": 1,
+    "fecha_creacion": "2025-05-15 00:00:00.000000"
   },
   {
     "id": 10,
@@ -107,7 +116,8 @@
     "ubicacion_imagen": null,
     "producto_tipo_id": 3,
     "producto_categoria_id": 6,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-03-19 00:00:00.000000"
   },
   {
     "id": 11,
@@ -118,6 +128,7 @@
     "ubicacion_imagen": null,
     "producto_tipo_id": 3,
     "producto_categoria_id": 3,
-    "producto_estado_id": 3
+    "producto_estado_id": 3,
+    "fecha_creacion": "2025-07-28 00:00:00.000000"
   }
 ]

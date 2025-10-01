@@ -6,6 +6,8 @@ import { ListProductsDto } from './dto/list-products.dto';
 import { ProductSortColumn } from './entities/product-sort-column.entity';
 import { ListProductPaginationDto } from './dto/list-products-pagination.dto';
 import { Product } from './entities/product.entity';
+import { ProductDetailsDto } from './dto/product-details.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductRepository {
@@ -14,6 +16,49 @@ export class ProductRepository {
     category: 'pc.code',
     price: 'pl.price',
   };
+
+  @HandleDBExceptions()
+  async findOne(id: number): Promise<Product | null> {
+    const [rows] = await this.db.connection.execute<
+      (Product & RowDataPacket)[]
+    >('SELECT * FROM products WHERE `id` = ? LIMIT 1', [id]);
+
+    return rows.length === 0 ? null : rows[0];
+  }
+
+  @HandleDBExceptions()
+  async findProductWithDetails(id: number): Promise<ProductDetailsDto | null> {
+    const query = `
+      SELECT 
+        p.*,
+        JSON_OBJECT(
+          'id', pl.id,
+          'price', pl.price
+        ) AS currentPrice,
+        JSON_OBJECT(
+          'id', pc.id,
+          'code', pc.code,
+          'description', pc.description
+        ) AS category  
+        JSON_OBJECT(
+          'id', ps.id,
+          'code', ps.code,
+          'description', ps.description
+        ) AS state  
+      FROM products p
+      INNER JOIN price_list pl ON p.id = pl.productId
+      INNER JOIN product_category pc ON p.productCategoryId = pc.id
+      INNER JOIN product_state ps ON p.productStateId = ps.id
+      WHERE 
+        id = ?
+        AND pl.fromDate < CURRENT_DATE() AND pl.toDate > CURRENT_DATE()
+      LIMIT 1
+    `;
+    const [rows] = await this.db.connection.execute<
+      (ProductDetailsDto & RowDataPacket)[]
+    >(query, [id]);
+    return rows.length === 0 ? null : rows[0];
+  }
 
   @HandleDBExceptions()
   async listProductsPaginated({
@@ -189,5 +234,18 @@ export class ProductRepository {
       );
 
     return { total, rows };
+  }
+
+  @HandleDBExceptions()
+  async update(id: number, product: UpdateProductDto): Promise<Product | null> {
+    const columns = Object.keys(product)
+      .map((col) => `${col} = ?`)
+      .join(', ');
+    const values = Object.values(product);
+
+    const query = `UPDATE products SET ${columns} WHERE id = ?`;
+    await this.db.connection.execute(query, [...values, id]);
+
+    return this.findOne(id);
   }
 }
