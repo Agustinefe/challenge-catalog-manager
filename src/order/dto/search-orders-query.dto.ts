@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class SearchOrdersQueryDto {
   @ApiProperty({
@@ -23,4 +29,24 @@ export class SearchOrdersQueryDto {
   @IsNotEmpty()
   @Type(() => String)
   cuit?: string;
+
+  @ApiProperty({
+    description: 'The minimum date when the order was created',
+    example: '2024-01-15T10:30:00Z',
+    required: false,
+  })
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  createdAtMin?: Date;
+
+  @ApiProperty({
+    description: 'The maximum date when the order was created',
+    example: '2024-01-15T10:30:00Z',
+    required: false,
+  })
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  createdAtMax?: Date;
 }

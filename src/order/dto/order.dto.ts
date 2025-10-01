@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsDate,
   IsDateString,
   IsInt,
   IsNumber,
@@ -22,10 +23,8 @@ export class OrderDto {
   @ApiProperty({
     description: 'Date when the order was issued',
     example: '2024-01-15T10:30:00Z',
-    type: 'string',
-    format: 'date-time',
   })
-  @IsDateString()
+  @IsDate()
   issueDate: Date;
 
   @ApiProperty({

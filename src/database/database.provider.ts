@@ -54,4 +54,8 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     this.assertConnection();
     await this.setup.seedTables();
   }
+
+  dateToSqlTimestamp(date: Date): string {
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+  }
 }

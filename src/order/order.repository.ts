@@ -9,7 +9,11 @@ export class OrderRepository {
   constructor(private db: DatabaseProvider) { }
 
   @HandleDBExceptions()
-  async findOrdersByIdAndCuit(id?: number, cuit?: string): Promise<Order[]> {
+  async findOrdersByIdAndCuit(
+    id?: number,
+    cuit?: string,
+    createdAt?: { createdAtMin?: Date; createdAtMax?: Date },
+  ): Promise<Order[]> {
     const filters = [];
 
     if (id) {
@@ -18,6 +22,19 @@ export class OrderRepository {
 
     if (cuit) {
       filters.push(`c.cuit = '${cuit}'`);
+    }
+
+    if (createdAt) {
+      if (createdAt.createdAtMin) {
+        filters.push(
+          `o.issueDate >= '${this.db.dateToSqlTimestamp(createdAt.createdAtMin)}'`,
+        );
+      }
+      if (createdAt.createdAtMax) {
+        filters.push(
+          `o.issueDate <= '${this.db.dateToSqlTimestamp(createdAt.createdAtMax)}'`,
+        );
+      }
     }
 
     const where = filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : '';
@@ -32,4 +49,8 @@ export class OrderRepository {
       await this.db.connection.query<(Order & RowDataPacket)[]>(query);
     return rows;
   }
+
+  /* async createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
+    const data = [createOrderDto.issueDate];
+  } */
 }

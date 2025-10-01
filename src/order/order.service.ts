@@ -11,6 +11,7 @@ export class OrderService {
     return await this.orderRepository.findOrdersByIdAndCuit(
       query.id,
       query.cuit,
+      { createdAtMin: query.createdAtMin, createdAtMax: query.createdAtMax },
     );
   }
 }

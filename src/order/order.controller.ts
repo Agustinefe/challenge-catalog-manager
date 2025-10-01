@@ -2,7 +2,8 @@ import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { SearchOrdersQueryDto } from './dto/search-orders-query.dto';
-import { Order } from './entities/order.entity';
+import { ValidateDateRangePipe } from 'src/common/pipes/validate-date-range.pipe';
+import { OrderDto } from './dto';
 
 @Controller('order')
 export class OrderController {
@@ -14,7 +15,7 @@ export class OrderController {
   })
   @ApiOkResponse({
     description: 'Returns the matched order(s)',
-    type: Order,
+    type: OrderDto,
     isArray: true,
   })
   @ApiBearerAuth()
@@ -27,7 +28,7 @@ export class OrderController {
       }),
     )
     queryDto: SearchOrdersQueryDto,
-  ): Promise<Order[]> {
+  ): Promise<OrderDto[]> {
     return await this.orderService.findOrders(queryDto);
   }
 }
