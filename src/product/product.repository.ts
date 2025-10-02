@@ -15,6 +15,7 @@ export class ProductRepository {
   private sortMapper: Record<ProductSortColumn, string> = {
     category: 'pc.code',
     price: 'pl.price',
+    creationDate: 'p.createdAt',
   };
 
   @HandleDBExceptions()

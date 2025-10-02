@@ -29,7 +29,8 @@ export default class ProductSeeder extends BaseSeeder<Product> {
         imageUrl varchar(255),
         productTypeId integer NOT NULL,
         productCategoryId integer NOT NULL,
-        productStateId integer NOT NULL
+        productStateId integer NOT NULL,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
     await this.conn.execute(createTableQuery);
@@ -63,6 +64,7 @@ export default class ProductSeeder extends BaseSeeder<Product> {
       u.producto_tipo_id,
       u.producto_categoria_id,
       u.producto_estado_id,
+      u.fecha_creacion,
     ]);
 
     const columns = [
@@ -76,6 +78,7 @@ export default class ProductSeeder extends BaseSeeder<Product> {
       'productTypeId',
       'productCategoryId',
       'productStateId',
+      'createdAt',
     ];
 
     await this.conn.query(

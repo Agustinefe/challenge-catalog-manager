@@ -11,6 +11,11 @@
 - Auth
   - Sign in
   - Sign out
+- Product
+  - List active products
+  - Get Product by slug and related products
+- Search
+  - Search product by sku and/or description
 
 ## Badges
 
@@ -46,11 +51,11 @@ npm run seed
 
 ## Areas to improve
 
-- Data should be moved from tests to an external file
 - Generic method should be used to mock endpoints
 - Error handling could be improved (I.E handle already existing user error)
-- The ORM is being used with Synchronize instead of migrations. Migrations would be the best option
-- Deployment with Heroku could be done
+- Some changes has been made to the original structure of the tables (I.E include createdAt fields). This changes should have been made with migrations to generate an history of the changes.
+- Deployment with Heroku or another cloud provider could be done.
+- Initially, the seeders had the unique responsibility of populating each table. Throughout the development, those seeders evolve to be more like a table manager, with a main orchestrator called DatabaseSetup. Probably it would be better to change the name of these classes to reflect their new responsibilities.
 
 ## Techs
 
@@ -63,6 +68,7 @@ npm run seed
 - Clean Architecture: To be able to handle further changes in the future in a proper way.
 - Docker: To make the project portable
 - Jest/Testing/E2E: Jest is the most used testing framework of JS. Same argument as above. E2E testing was done because it is useless to always test every single part. That's why if the controller provide the proper answer the test has passed.
+- Mysql2: Despite the increasing popularity of the ORM libraries like TypeORM o Sequelize, one of the main goals of this project is to see how the queries are being managed directly to the DB.
 
 ## Route
 
