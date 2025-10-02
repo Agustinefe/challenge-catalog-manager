@@ -9,4 +9,5 @@ export class Product {
   productTypeId: number;
   productCategoryId: number;
   productStateId: number;
+  createdAt: Date;
 }

@@ -136,6 +136,24 @@ describe('ProductController (e2e)', () => {
       );
       expect(isOrderedByCategory).toBeTruthy();
     });
+    it('should return data ordered by creation date ascending', async () => {
+      await context.seedTestApp();
+
+      const response = await request(context.app.getHttpServer())
+        .get('/product?page=1&pageSize=5&sortBy=creationDate')
+        .set('Authorization', `Bearer ${commonAccessToken}`)
+        .expect(200);
+
+      const responseBody = response.body as ListProductsResponseDto;
+      expect(responseBody.data.length).not.toBe(0);
+      const timestampArray = responseBody.data.map((p) =>
+        new Date(p.createdAt).getTime(),
+      );
+      const isOrderedByCreationDate = timestampArray.every((current, idx) =>
+        idx === 0 ? true : current >= timestampArray[idx - 1],
+      );
+      expect(isOrderedByCreationDate).toBeTruthy();
+    });
   });
 
   describe('GET /product/:slug', () => {

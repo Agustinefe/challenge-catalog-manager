@@ -19,6 +19,10 @@ export default class ClientSeeder extends BaseSeeder<Client> {
       );
     `;
     await this.conn.execute(createTableQuery);
+
+    await this.conn.execute(`
+      CREATE UNIQUE INDEX cuitIndex ON clients (cuit);
+    `);
   }
 
   public async dropTable(): Promise<void> {

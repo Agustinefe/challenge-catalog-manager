@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDate } from 'class-validator';
 
 export class ProductDto {
   @ApiProperty({
@@ -59,4 +60,11 @@ export class ProductDto {
     description: 'Product state identifier',
   })
   productStateId: number;
+
+  @ApiProperty({
+    description: 'Date when the product was created',
+    example: '2024-01-15T10:30:00Z',
+  })
+  @IsDate()
+  createdAt: Date;
 }
