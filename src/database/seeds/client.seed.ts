@@ -15,14 +15,10 @@ export default class ClientSeeder extends BaseSeeder<Client> {
         firstName varchar(255),
         lastName varchar(255),
         address varchar(255),
-        cuit varchar(255)
+        cuit varchar(255) UNIQUE
       );
     `;
     await this.conn.execute(createTableQuery);
-
-    await this.conn.execute(`
-      CREATE UNIQUE INDEX cuitIndex ON clients (cuit);
-    `);
   }
 
   public async dropTable(): Promise<void> {
