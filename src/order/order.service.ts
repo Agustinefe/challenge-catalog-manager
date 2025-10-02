@@ -54,7 +54,9 @@ export class OrderService {
     const { productId, clientId } = createOrderDto;
     const product = await this.productService.findById(productId);
     if (!product) {
-      throw new NotFoundException(`Product with ID ${productId} not found`);
+      throw new NotFoundException(
+        `Product with ID ${productId} was not found or does not have a price`,
+      );
     }
     this.validateThatProductCanBeOrdered(
       product,

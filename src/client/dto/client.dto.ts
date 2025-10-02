@@ -2,32 +2,32 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ClientDto {
   @ApiProperty({
+    description: 'Unique identifier of the client',
     example: 1,
-    description: 'Identificador único del cliente',
   })
   id: number;
 
   @ApiProperty({
+    description: 'First name of the client',
     example: 'Juan',
-    description: 'Nombre del cliente',
   })
   firstName: string;
 
   @ApiProperty({
+    description: 'Last name of the client',
     example: 'Pérez',
-    description: 'Apellido del cliente',
   })
   lastName: string;
 
   @ApiProperty({
+    description: 'Address of the client',
     example: 'Av. Siempre Viva 123, CABA',
-    description: 'Dirección del cliente',
   })
   address: string;
 
   @ApiProperty({
-    example: '20-12345678-9',
-    description: 'CUIT del cliente',
+    description: 'CUIT of the client',
+    example: '20123456789',
   })
   cuit: string;
 }

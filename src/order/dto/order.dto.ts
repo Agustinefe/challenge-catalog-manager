@@ -38,7 +38,7 @@ export class OrderDto {
 
   @ApiProperty({
     description: 'Delivery class for the order',
-    example: 'EXPRESS',
+    example: 'EXP',
     maxLength: 50,
   })
   @IsString()

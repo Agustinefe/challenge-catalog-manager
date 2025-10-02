@@ -40,8 +40,7 @@ export class OrderController {
     )
     queryDto: SearchOrdersQueryDto,
   ): Promise<OrderDto[]> {
-    const result = await this.orderService.findOrders(queryDto);
-    return result;
+    return await this.orderService.findOrders(queryDto);
   }
 
   @ApiOperation({
