@@ -15,7 +15,10 @@
   - List active products
   - Get Product by slug and related products
 - Search
-  - Search product by sku and/or description
+  - Search products by sku and/or description
+- Order
+  - Search orders by id, client cuit or creation date
+  - Create a new order
 
 ## Badges
 
@@ -69,7 +72,7 @@ npm run seed
 
 - Clean Architecture: To be able to handle further changes in the future in a proper way.
 - Docker: To make the project portable
-- Jest/Testing/E2E: Jest is the most used testing framework of JS. Same argument as above. E2E testing was done because it is useless to always test every single part. That's why if the controller provide the proper answer the test has passed.
+- Jest/Testing/E2E: Jest is the most used testing framework of JS. Same argument as above. E2E testing was done because it is useless to always test every single part. That's why if the controller provide the proper answer the test has passed. Also the E2E tests interact with its own tabase, independently from the production database. This is to ensure the tests are closer to real-world use cases.
 - Mysql2: Despite the increasing popularity of the ORM libraries like TypeORM o Sequelize, one of the main goals of this project is to see how the queries are being managed directly to the DB.
 
 ## Route
@@ -79,8 +82,3 @@ npm run seed
 ## Env vars that should be defined
 
 To find an example of the values you can use [.env.example](.env.example)
-
-## TODO list:
-
-- Explain that the tables and fields has been translated to English
-- Explain why the slug is generated and stored in the db
