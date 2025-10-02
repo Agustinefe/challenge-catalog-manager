@@ -27,6 +27,12 @@ export class ProductRepository {
     return rows.length === 0 ? null : rows[0];
   }
 
+  /**
+   * Finds a product with all the details (category, current price and status)
+   *
+   * @param {string} id - The product identifier
+   * @returns {Promise<ProductDetailsDto | null>} The product with its details, or null if there is no product.
+   */
   @HandleDBExceptions()
   async findProductWithDetails(id: number): Promise<ProductDetailsDto | null> {
     const query = `
@@ -60,6 +66,12 @@ export class ProductRepository {
     return rows.length === 0 ? null : rows[0];
   }
 
+  /**
+   * Finds the active products. This function is paginated.
+   *
+   * @param {ListProductPaginationDto} pagination - Pagination metadata
+   * @returns {Promise<{total: number;rows: ListProductsDto[];}>} The product page, with the total found.
+   */
   @HandleDBExceptions()
   async listProductsPaginated({
     sortBy,
@@ -137,6 +149,18 @@ export class ProductRepository {
     return rows.length === 0 ? null : rows[0];
   }
 
+  /**
+   * Finds N products near to the given slug.
+   *
+   * First, order the product and split the list by the product with the given slug. Then take the N/2 products that come before,
+   * and the N/2 products that come after.
+   *
+   * This algorithm works even if there is no product with the given slug, so it's suitable for fetching alternative products.
+   *
+   * @param {string} slug - The given slug to find related products
+   * @param {string | undefined} limit - The number of related products to fetch
+   * @returns {Promise<Product[]>} The related products.
+   */
   @HandleDBExceptions()
   async findNProductsNearToSlug(
     slug: string,
@@ -171,6 +195,14 @@ export class ProductRepository {
     return before.concat(after);
   }
 
+  /**
+   * Finds products by sku and/or description. This function is paginated.
+   *
+   * @param {ListProductPaginationDto} pagination - Pagination metadata
+   * @param {string | undefined} sku - The given sku to filter by
+   * @param {string | undefined} sku - The given description to filter by
+   * @returns {Promise<{total: number;rows: ListProductsDto[];}>} The product page, with the total found.
+   */
   @HandleDBExceptions()
   async getProductsBySkuAndDescription(
     { sortBy, sortOrder, page, pageSize }: ListProductPaginationDto,

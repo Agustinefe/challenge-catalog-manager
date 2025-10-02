@@ -43,6 +43,8 @@ chmod 711 ./up_test.sh
 ./up_test.sh
 ```
 
+> Warning: since the tests are designed to works with its own database, this process could be slow, dependind on the computer. You can check the badges if you want to know if the tests passed quickly.
+
 ## How to run the seed (DB must be up and running, node modules installed)
 
 ```
@@ -80,7 +82,5 @@ To find an example of the values you can use [.env.example](.env.example)
 
 ## TODO list:
 
-- Explain that ordering by category means ordering by category code.
 - Explain that the tables and fields has been translated to English
 - Explain why the slug is generated and stored in the db
-- Explain how I calculate the related products.

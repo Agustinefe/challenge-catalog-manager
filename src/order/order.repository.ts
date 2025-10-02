@@ -25,17 +25,16 @@ export class OrderRepository {
       filters.push(`c.cuit = '${cuit}'`);
     }
 
-    if (createdAt) {
-      if (createdAt.createdAtMin) {
-        filters.push(
-          `o.issueDate >= '${this.db.dateToSqlTimestamp(createdAt.createdAtMin)}'`,
-        );
-      }
-      if (createdAt.createdAtMax) {
-        filters.push(
-          `o.issueDate <= '${this.db.dateToSqlTimestamp(createdAt.createdAtMax)}'`,
-        );
-      }
+    if (createdAt?.createdAtMin) {
+      filters.push(
+        `o.issueDate >= '${this.db.dateToSqlTimestamp(createdAt.createdAtMin)}'`,
+      );
+    }
+
+    if (createdAt?.createdAtMax) {
+      filters.push(
+        `o.issueDate <= '${this.db.dateToSqlTimestamp(createdAt.createdAtMax)}'`,
+      );
     }
 
     const where = filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : '';

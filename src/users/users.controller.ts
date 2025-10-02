@@ -13,6 +13,8 @@ import { CreateUserDto, UpdateUserDto, UserDto } from './dto';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -27,7 +29,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'The user has been successfully created',
     type: UserDto,
     isArray: false,
@@ -83,7 +85,9 @@ export class UsersController {
   @ApiOperation({ summary: 'Delete a user' })
   @ApiParam({ name: 'id', description: 'The user id' })
   @HttpCode(204)
-  @ApiOkResponse({ description: 'The user has been successfully deleted' })
+  @ApiNoContentResponse({
+    description: 'The user has been successfully deleted',
+  })
   @Delete(':id')
   @ApiBearerAuth()
   async remove(@Param('id') id: number): Promise<void> {

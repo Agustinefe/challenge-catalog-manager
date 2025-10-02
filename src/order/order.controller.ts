@@ -8,8 +8,11 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -22,7 +25,7 @@ export class OrderController {
 
   @ApiOperation({
     summary: 'Search for orders',
-    description: 'Search for orders by id and/or cuit',
+    description: 'Search for orders by id, cuit, and/or creation date',
   })
   @ApiOkResponse({
     description: 'Returns the matched order(s)',
@@ -45,12 +48,21 @@ export class OrderController {
 
   @ApiOperation({
     summary: 'Create a new order',
+    description:
+      'To create an order, the product and the client must exists, and the product must have enough stock to satisfy the order.',
   })
   @ApiBody({ type: CreateOrderDto })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'Returns the new order',
     type: OrderDto,
     isArray: false,
+  })
+  @ApiBadRequestResponse({
+    description:
+      'The product is no enabled to be ordered, or does not have stock enough to satisfy the order.',
+  })
+  @ApiNotFoundResponse({
+    description: 'The product or the client does not exists.',
   })
   @ApiBearerAuth()
   @Post()
